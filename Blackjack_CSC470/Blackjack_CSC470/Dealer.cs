@@ -9,6 +9,7 @@ namespace Blackjack_CSC470
     class Dealer
     {
         int handvalue = 0;
+        List<Card> dealerhand;
 
         bool isdealerbusted()
         {
@@ -24,8 +25,10 @@ namespace Blackjack_CSC470
             {
                 if (handvalue < 17)
                     Console.WriteLine("Draw.");  //draw card
+                dealerhand.drawcard();
+                
                 else
-                    Console.WriteLine("Stand"); //stand
+                    Console.WriteLine("Stand");  //stand
             }
             else
             {

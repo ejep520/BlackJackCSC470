@@ -29,5 +29,15 @@ namespace Blackjack_CSC470
             pictureBox3.Image = Card.GetBackImage();
             pictureBox4.Image = Card.GetBackImage();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            add
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
