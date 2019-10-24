@@ -22,14 +22,14 @@ namespace Blackjack_CSC470
         {
             if (!isdealerbusted())
             {
-                if (handvalue<17)
-                    //draw card
+                if (handvalue < 17)
+                    Console.WriteLine("Draw.");  //draw card
                 else
-                    //stand
+                    Console.WriteLine("Stand"); //stand
             }
             else
             {
-                //say dealer is busted
+                Console.WriteLine("Dealer is busted!");//say dealer is busted
             }
         }
     }

@@ -1,0 +1,9 @@
+C:\Users\Erik0\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\obj\Debug\Blackjack_CSC470.csprojAssemblyReference.cache
+C:\Users\Erik0\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\obj\Debug\Blackjack_CSC470.Form1.resources
+C:\Users\Erik0\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\obj\Debug\Blackjack_CSC470.Properties.Resources.resources
+C:\Users\Erik0\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\obj\Debug\Blackjack_CSC470.csproj.GenerateResource.cache
+C:\Users\Erik0\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\bin\Debug\Blackjack_CSC470.exe.config
+C:\Users\Erik0\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\bin\Debug\Blackjack_CSC470.exe
+C:\Users\Erik0\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\bin\Debug\Blackjack_CSC470.pdb
+C:\Users\Erik0\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\obj\Debug\Blackjack_CSC470.exe
+C:\Users\Erik0\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\obj\Debug\Blackjack_CSC470.pdb

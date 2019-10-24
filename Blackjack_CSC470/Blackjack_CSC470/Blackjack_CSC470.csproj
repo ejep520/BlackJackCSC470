@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -83,8 +85,64 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Images\" />
+    <EmbeddedResource Include="Images\10_of_clubs.png" />
+    <EmbeddedResource Include="Images\10_of_diamonds.png" />
+    <EmbeddedResource Include="Images\10_of_hearts.png" />
+    <EmbeddedResource Include="Images\10_of_spades.png" />
+    <EmbeddedResource Include="Images\2_of_clubs.png" />
+    <EmbeddedResource Include="Images\2_of_diamonds.png" />
+    <EmbeddedResource Include="Images\2_of_hearts.png" />
+    <EmbeddedResource Include="Images\2_of_spades.png" />
+    <EmbeddedResource Include="Images\3_of_clubs.png" />
+    <EmbeddedResource Include="Images\3_of_diamonds.png" />
+    <EmbeddedResource Include="Images\3_of_hearts.png" />
+    <EmbeddedResource Include="Images\3_of_spades.png" />
+    <EmbeddedResource Include="Images\4_of_clubs.png" />
+    <EmbeddedResource Include="Images\4_of_diamonds.png" />
+    <EmbeddedResource Include="Images\4_of_hearts.png" />
+    <EmbeddedResource Include="Images\4_of_spades.png" />
+    <EmbeddedResource Include="Images\5_of_clubs.png" />
+    <EmbeddedResource Include="Images\5_of_diamonds.png" />
+    <EmbeddedResource Include="Images\5_of_hearts.png" />
+    <EmbeddedResource Include="Images\5_of_spades.png" />
+    <EmbeddedResource Include="Images\6_of_clubs.png" />
+    <EmbeddedResource Include="Images\6_of_diamonds.png" />
+    <EmbeddedResource Include="Images\6_of_hearts.png" />
+    <EmbeddedResource Include="Images\6_of_spades.png" />
+    <EmbeddedResource Include="Images\7_of_clubs.png" />
+    <EmbeddedResource Include="Images\7_of_diamonds.png" />
+    <EmbeddedResource Include="Images\7_of_hearts.png" />
+    <EmbeddedResource Include="Images\7_of_spades.png" />
+    <EmbeddedResource Include="Images\8_of_clubs.png" />
+    <EmbeddedResource Include="Images\8_of_diamonds.png" />
+    <EmbeddedResource Include="Images\8_of_hearts.png" />
+    <EmbeddedResource Include="Images\8_of_spades.png" />
+    <EmbeddedResource Include="Images\9_of_clubs.png" />
+    <EmbeddedResource Include="Images\9_of_diamonds.png" />
+    <EmbeddedResource Include="Images\9_of_hearts.png" />
+    <EmbeddedResource Include="Images\9_of_spades.png" />
+    <EmbeddedResource Include="Images\ace_of_clubs.png" />
+    <EmbeddedResource Include="Images\ace_of_diamonds.png" />
+    <EmbeddedResource Include="Images\ace_of_hearts.png" />
+    <EmbeddedResource Include="Images\ace_of_spades.png" />
+    <EmbeddedResource Include="Images\back%402x.png" />
+    <EmbeddedResource Include="Images\back.png" />
+    <EmbeddedResource Include="Images\black_joker.png" />
+    <EmbeddedResource Include="Images\jack_of_clubs.png" />
+    <EmbeddedResource Include="Images\jack_of_diamonds.png" />
+    <EmbeddedResource Include="Images\jack_of_hearts.png" />
+    <EmbeddedResource Include="Images\jack_of_spades.png" />
+    <EmbeddedResource Include="Images\king_of_clubs.png" />
+    <EmbeddedResource Include="Images\king_of_diamonds.png" />
+    <EmbeddedResource Include="Images\king_of_hearts.png" />
+    <EmbeddedResource Include="Images\king_of_spades.png" />
+    <EmbeddedResource Include="Images\queen_of_clubs.png" />
+    <EmbeddedResource Include="Images\queen_of_diamonds.png" />
+    <EmbeddedResource Include="Images\queen_of_hearts.png" />
+    <EmbeddedResource Include="Images\queen_of_spades.png" />
+    <EmbeddedResource Include="Images\red_joker.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
