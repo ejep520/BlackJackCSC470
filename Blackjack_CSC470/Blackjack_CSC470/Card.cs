@@ -35,7 +35,26 @@ namespace Blackjack_CSC470
         /// Constructor method
         /// </summary>
         /// <param name="SetFace">This is the face value of the card being created.</param>
-        /// <param name="SetSuit">This is the suit of the card being created</param>
+        /// <param name="SetSuit">This is the suit of the card being created
+        /// <list type="bullet">
+        /// <item>
+        /// <term>0</term>
+        /// <description>Hearts</description>
+        /// </item>
+        /// <item>
+        /// <term>1</term>
+        /// <description>Diamonds</description>
+        /// </item>
+        /// <item>
+        /// <term>2</term>
+        /// <description>Clubs</description>
+        /// </item>
+        /// <item>
+        /// <term>3</term>
+        /// <description>Spades</description>
+        /// </item>
+        /// </list>
+        /// </param>
         public Card(int SetFace, int SetSuit)
         {
             Face = SetFace;
@@ -89,14 +108,14 @@ namespace Blackjack_CSC470
             }
             return ReturnVal;
         }
-/// <summary>
-/// This is the value that is used when computing the value of the hand.
-/// </summary>
-/// <value>This int sets/gets the _valueOf private int.</value>
+        /// <summary>
+        /// This is the value that is used when computing the value of the hand.
+        /// </summary>
+        /// <value>This int sets/gets the _valueOf private int.</value>
         public int ValueOf
         {
-///<param name="value">This integer must be between 1 and 11.</param>
-///<exception cref="ArgumentOutOfRangeException">The value given was <1 or >11.</exception>
+            ///<param name="value">This integer must be between 1 and 11.</param>
+            ///<exception cref="ArgumentOutOfRangeException">The value given was <1 or >11.</exception>
             set
             {
                 if (_face >= 2 && _face < 11)

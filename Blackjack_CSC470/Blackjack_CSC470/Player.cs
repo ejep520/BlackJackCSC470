@@ -9,10 +9,12 @@ namespace Blackjack_CSC470
     class Player
     {
         int handvalue = 0;
+        List<Card> playerhand;
 
-        void addcardvalue(Card card)
+        public void addcardvalue(Card card)
         {
             handvalue = handvalue + card.ValueOf;
+            playerhand.Add(card);
         }
 
         bool isplayerbusted()
