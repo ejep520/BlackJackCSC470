@@ -21,5 +21,13 @@ namespace Blackjack_CSC470
         {
 
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            pictureBox1.Image = Card.GetBackImage();
+            pictureBox2.Image = Card.GetBackImage();
+            pictureBox3.Image = Card.GetBackImage();
+            pictureBox4.Image = Card.GetBackImage();
+        }
     }
 }

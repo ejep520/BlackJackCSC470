@@ -12,7 +12,7 @@ namespace Blackjack_CSC470
 
         void addcardvalue(Card card)
         {
-            handvalue = handvalue + card.Face;
+            handvalue = handvalue + card.ValueOf;
         }
 
         bool isplayerbusted()
