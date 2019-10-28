@@ -9,8 +9,13 @@ namespace Blackjack_CSC470
     class Player
     {
         int handvalue = 0;
+        decimal balance;
         List<Card> playerhand;
-
+        Deck theDeck;
+        public Player(Deck thedeck)
+        {
+            theDeck = thedeck;
+        }
         public void addcardvalue(Card card)
         {
             handvalue = handvalue + card.ValueOf;

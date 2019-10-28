@@ -45,7 +45,7 @@
             this.pictureBox1.AccessibleName = "Playercard1";
             this.pictureBox1.Location = new System.Drawing.Point(165, 238);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Name = "Playercard1";
             this.pictureBox1.Size = new System.Drawing.Size(75, 103);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -56,7 +56,7 @@
             this.pictureBox2.AccessibleName = "Playercard2";
             this.pictureBox2.Location = new System.Drawing.Point(282, 238);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Name = "Playercard2";
             this.pictureBox2.Size = new System.Drawing.Size(75, 103);
             this.pictureBox2.TabIndex = 1;
             this.pictureBox2.TabStop = false;
@@ -66,7 +66,7 @@
             this.pictureBox3.AccessibleName = "Dealercard1";
             this.pictureBox3.Location = new System.Drawing.Point(165, 24);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Name = "Dealercard1";
             this.pictureBox3.Size = new System.Drawing.Size(75, 103);
             this.pictureBox3.TabIndex = 2;
             this.pictureBox3.TabStop = false;
@@ -76,7 +76,7 @@
             this.pictureBox4.AccessibleName = "Dealercard2";
             this.pictureBox4.Location = new System.Drawing.Point(282, 24);
             this.pictureBox4.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Name = "Dealercard2";
             this.pictureBox4.Size = new System.Drawing.Size(75, 103);
             this.pictureBox4.TabIndex = 3;
             this.pictureBox4.TabStop = false;
@@ -92,7 +92,7 @@
             this.HitButton.TabIndex = 4;
             this.HitButton.Text = "Hit";
             this.HitButton.UseVisualStyleBackColor = false;
-            this.HitButton.Click += new System.EventHandler(this.button1_Click);
+            this.HitButton.Click += new System.EventHandler(this.hit_Click);
             // 
             // StandButton
             // 
@@ -105,7 +105,7 @@
             this.StandButton.TabIndex = 5;
             this.StandButton.Text = "Stand";
             this.StandButton.UseVisualStyleBackColor = false;
-            this.StandButton.Click += new System.EventHandler(this.button2_Click);
+            this.StandButton.Click += new System.EventHandler(this.stand_Click);
             // 
             // Form1
             // 

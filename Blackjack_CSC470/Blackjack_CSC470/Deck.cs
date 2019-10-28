@@ -6,15 +6,27 @@ using System.Threading.Tasks;
 
 namespace Blackjack_CSC470
 {
-    class Deck
+    public class Deck
     {
-        int Num_Cards = 52;
-        int oncard = 0;
-        List<Card> deck;
-        HashSet<Card> shuffledCards;
-        void shuffledeck()
+        // int Num_Cards = 52;
+        // int oncard = 0;
+        private List<Card> deck;
+        private HashSet<Card> shuffledCards;
+        public Deck()
         {
             deck.Clear();
+            for (int counter = 0; counter < 4; counter++)
+            {
+                for (int face = 1; face < 14; face++)
+                {
+                    deck.Add(new Card(face, counter));
+                }
+            }
+            shuffledeck();
+        }
+        public void shuffledeck()
+        {
+            shuffledCards.Clear();
             Random random = new Random();
             int getCard = random.Next() % 52;
             while (shuffledCards.Count < 52)
@@ -25,7 +37,7 @@ namespace Blackjack_CSC470
             return;
         }
 
-        Card drawcard()
+        public Card drawcard()
         {
             Card card = (Card)shuffledCards.Take(1);
             shuffledCards.Remove(card);
