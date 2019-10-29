@@ -86,9 +86,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="NewFile1.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Images\10_of_clubs.png" />
     <EmbeddedResource Include="Images\10_of_diamonds.png" />
     <EmbeddedResource Include="Images\10_of_hearts.png" />

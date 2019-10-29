@@ -10,7 +10,11 @@ namespace Blackjack_CSC470
     {
         int handvalue = 0;
         List<Card> dealerhand;
-
+        Deck theDeck;
+        public Dealer(Deck thedeck)
+        {
+            theDeck = thedeck;
+        }
         bool isdealerbusted()
         {
             if (handvalue > 21)
@@ -24,11 +28,15 @@ namespace Blackjack_CSC470
             if (!isdealerbusted())
             {
                 if (handvalue < 17)
+                {
                     Console.WriteLine("Draw.");  //draw card
-                dealerhand.drawcard();
-                
+                    //dealer draw from deck into dealer's hand
+                    Card drawncard = theDeck.drawcard();
+                    //add card value to handvalue
+                    handvalue += drawncard.ValueOf;
+                }
                 else
-                    Console.WriteLine("Stand");  //stand
+                    Console.WriteLine("Dealer Stands");  //stands
             }
             else
             {
