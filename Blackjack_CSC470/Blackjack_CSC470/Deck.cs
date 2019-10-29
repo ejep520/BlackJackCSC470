@@ -10,8 +10,8 @@ namespace Blackjack_CSC470
     {
         // int Num_Cards = 52;
         // int oncard = 0;
-        private List<Card> deck;
-        private HashSet<Card> shuffledCards;
+        private List<Card> deck = new List<Card>();
+        private HashSet<Card> shuffledCards = new HashSet<Card>();
         public Deck()
         {
             deck.Clear();

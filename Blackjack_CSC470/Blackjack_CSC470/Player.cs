@@ -8,9 +8,9 @@ namespace Blackjack_CSC470
 {
     class Player
     {
-        int handvalue = 0;
+        public int handvalue = 0;
         decimal balance;
-        List<Card> playerhand;
+        List<Card> playerhand = new List<Card>();
         Deck theDeck;
 
         public Player(Deck thedeck)

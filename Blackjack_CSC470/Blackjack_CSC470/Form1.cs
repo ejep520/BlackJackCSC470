@@ -16,8 +16,10 @@ namespace Blackjack_CSC470
         static Deck theDeck = new Deck();
         Dealer theDealer = new Dealer(theDeck);
         Player thePlayer = new Player(theDeck);
+        int PlayerBalance = 100;
         int Playercardvisible = 2;
         int Dealercardvisible = 2;
+        bool saveTheData = true;
         PictureBox[] Playercards = new PictureBox[7];
         PictureBox[] Dealercards = new PictureBox[7];
         
@@ -26,10 +28,6 @@ namespace Blackjack_CSC470
             InitializeComponent();
 
             //game loop (work in progress)
-            while(thePlayer.isplayerbusted() == false)
-            {
-                
-            }
         }
 
         
@@ -37,12 +35,56 @@ namespace Blackjack_CSC470
         private void Form1_Load(object sender, EventArgs e)
         {
             //load player balance
+            StreamReader reader = null;
+            try
+            {
+                reader = File.OpenText(Path.Combine(Application.UserAppDataPath, "BlackJack07", "Balance.sav"));
+            }
+            catch (DirectoryNotFoundException)
+            {
+                Directory.CreateDirectory(Path.Combine(Application.UserAppDataPath, "BlackJack07"));
+                File.Create(Path.Combine(Application.UserAppDataPath, "BlackJack07", "Balance.sav")).Close();
+            }
+            catch (FileNotFoundException)
+            {
+                File.Create(Path.Combine(Application.UserAppDataPath, "BlackJack07", "Balance.sav")).Close();
+            }
+            catch(PathTooLongException)
+            {
+                MessageBox.Show("Due to technical issues, we cannot retrieve or save the balance of your game today. Sorry!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                saveTheData = false;
+            }
+            catch (NotSupportedException)
+            {
+                MessageBox.Show("Due to technical issues, we cannot retrieve or save the balance of your game today. Sorry!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                saveTheData = false;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    try
+                    {
+                        PlayerBalance = int.Parse(reader.ReadToEnd());
+                    }
+                    catch (FormatException) { }
+                    catch (OverflowException)
+                    {
+                        MessageBox.Show("There was an overflow error!");
+                    }
+                    reader.Close();
+                }
+            }
             //player
             Playercard1.Image = Card.GetBackImage();
+            Playercard1.Visible = true;
             Playercard2.Image = Card.GetBackImage();
+            Playercard2.Visible = true;
             //dealer
             Dealercard1.Image = Card.GetBackImage();
+            Dealercard1.Visible = true;
             Dealercard2.Image = Card.GetBackImage();
+            Dealercard2.Visible = true;
             //make unneeded cards invisible
             Playercard3.Visible = false;
             Playercard4.Visible = false;
@@ -85,7 +127,7 @@ namespace Blackjack_CSC470
         {
             //player chooses to stand. Start dealer functions
             
-             theDealer.dealeraction();
+             theDealer.dealeraction(thePlayer.handvalue);
         }
 
         private void betvalues_SelectedIndexChanged(object sender, EventArgs e)
@@ -97,7 +139,9 @@ namespace Blackjack_CSC470
         {
             theDeck.shuffledeck();
             Playercard1.Image = Card.GetBackImage();
+            Playercard1.Visible = true;
             Playercard2.Image = Card.GetBackImage();
+            Playercard2.Visible = true;
             Playercard3.Visible = false;
             Playercard4.Visible = false;
             Playercard5.Visible = false;
@@ -126,6 +170,30 @@ namespace Blackjack_CSC470
         {
 
         }
-
+        private void Form1_Closing(object sender, EventArgs e)
+        {
+            if (saveTheData)
+            {
+                StreamWriter writer = null;
+                try
+                {
+                    writer = File.CreateText(Path.Combine(Application.UserAppDataPath, "BlackJack07", "Balance.sav"));
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    Directory.CreateDirectory(Path.Combine(Application.UserAppDataPath, "BlackJack07"));
+                    writer = File.CreateText(Path.Combine(Application.UserAppDataPath, "BlackJack07", "Balance.sav"));
+                }
+                finally
+                {
+                    writer.Write(PlayerBalance.ToString());
+                    writer.Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Due to previously identified technical issues on your computer,\nwe cannot save your progrss. Goodbye.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
 }

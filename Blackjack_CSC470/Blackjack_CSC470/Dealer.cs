@@ -10,7 +10,7 @@ namespace Blackjack_CSC470
     class Dealer
     {
         int handvalue = 0;
-        List<Card> dealerhand;
+        List<Card> dealerhand = new List<Card>();
         Deck theDeck;
 
         public Dealer(Deck thedeck)
@@ -25,7 +25,7 @@ namespace Blackjack_CSC470
                 return false;
         }
 
-        public void dealeraction()
+        public void dealeraction(int playerHandValue)
         {
             while(true)
             {
@@ -43,14 +43,14 @@ namespace Blackjack_CSC470
                     {
                         Console.WriteLine("Dealer Stands");  //stands
                         //compare player and dealer hands
-                        if (/*dealerhand > playerhand*/)
+                        if (handvalue > playerHandValue)
                         {
                             //print dealer wins
                             MessageBox.Show("Dealer Wins! You lose 'X' amount of money.");
                             //subtract bet from player balance
                             //exit
                         }
-                        else if (/*dealerhand < playerhand*/)
+                        else if (handvalue < playerHandValue)
                         {//print player wins
                             MessageBox.Show("Player Wins! You win 'X' amount of money.");
                             //add bet to player balance
@@ -59,7 +59,7 @@ namespace Blackjack_CSC470
                         else
                         {
                             //print push/tie game
-                            MessageBox.Show("Push. You get your 'bet' amount back.")
+                            MessageBox.Show("Push. You get your 'bet' amount back.");
                             //save player balance
                             //exit
                         }

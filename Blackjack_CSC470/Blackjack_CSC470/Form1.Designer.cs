@@ -306,6 +306,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_Closing);
             ((System.ComponentModel.ISupportInitialize)(this.Playercard1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Playercard2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Dealercard1)).EndInit();
