@@ -12,6 +12,7 @@ namespace Blackjack_CSC470
         decimal balance;
         List<Card> playerhand;
         Deck theDeck;
+
         public Player(Deck thedeck)
         {
             theDeck = thedeck;
@@ -22,12 +23,24 @@ namespace Blackjack_CSC470
             playerhand.Add(card);
         }
 
-        bool isplayerbusted()
+        public bool isplayerbusted()
         {
             if (handvalue > 21)
                 return true;
             else
                 return false;
+        }
+
+        public void playerhit()
+        {
+            Card drawncard = theDeck.drawcard();
+            this.addcardvalue(drawncard);
+        }
+
+        public void resetplayer()
+        {
+            handvalue = 0;
+            playerhand.Clear();
         }
     }
 }
