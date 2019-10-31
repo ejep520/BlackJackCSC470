@@ -12,7 +12,10 @@ namespace Blackjack_CSC470
         int handvalue = 0;
         List<Card> dealerhand = new List<Card>();
         Deck theDeck;
-
+        int Dealercardvisible = 0;
+        PictureBox[] Dealercards = new PictureBox[7];
+        
+        
         public Dealer(Deck thedeck)
         {
             theDeck = thedeck;
@@ -38,6 +41,10 @@ namespace Blackjack_CSC470
                         Card drawncard = theDeck.drawcard();
                         //add card value to handvalue
                         handvalue += drawncard.ValueOf;
+                        //assign card image to picturebox
+                        Dealercardvisible++;
+                        Dealercards[Dealercardvisible].Visible = true;
+                        Dealercards[Dealercardvisible].Image = drawncard.CardFront();
                     }
                     else
                     {

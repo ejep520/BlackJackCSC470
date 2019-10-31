@@ -31,16 +31,22 @@ namespace Blackjack_CSC470
                 return false;
         }
 
-        public void playerhit()
+        public Card playerhit()
         {
             Card drawncard = theDeck.drawcard();
             this.addcardvalue(drawncard);
+            return drawncard;
         }
 
         public void resetplayer()
         {
             handvalue = 0;
             playerhand.Clear();
+        }
+
+        public Card getplayerhand()
+        {
+            return playerhand.Last();
         }
     }
 }

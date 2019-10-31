@@ -87,9 +87,10 @@ namespace Blackjack_CSC470
             string filename = string.Concat(Name_0, Name_1, Name_2, Name_3, Name_4);
             Assembly assembly = Assembly.GetExecutingAssembly();
             Image ReturnVal;
+            Size size = new Size(100, 127);
             using (Stream stream = assembly.GetManifestResourceStream(filename))
             {
-                ReturnVal = Image.FromStream(stream);
+                ReturnVal = (Image)new Bitmap(Image.FromStream(stream), size);
             }
             return ReturnVal;
         }
