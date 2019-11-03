@@ -39,7 +39,7 @@ namespace Blackjack_CSC470
 
         public Card drawcard()
         {
-            Card card = (Card)shuffledCards.Take(1);
+            Card card = (Card)shuffledCards.Take(1).Single();
             shuffledCards.Remove(card);
             return card;
         }
