@@ -17,11 +17,14 @@ namespace Blackjack_CSC470
         Dealer theDealer = new Dealer(theDeck);
         Player thePlayer = new Player(theDeck);
         int PlayerBalance = 100;
-        int Playercardvisible = 2;
-        int Dealercardvisible = 2;
+        int Playercardvisible = 0;
         bool saveTheData = true;
         PictureBox[] Playercards = new PictureBox[7];
         PictureBox[] Dealercards = new PictureBox[7];
+
+        //List<string> BetsList = new List<string>();
+        ComboBox betsList = new ComboBox();
+        
         
         public Form1()
         {
@@ -34,6 +37,8 @@ namespace Blackjack_CSC470
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            betsList.Items.Add("$5.00");
+            betsList.Items.Add("$10.00");
             //load player balance
             StreamReader reader = null;
             try
@@ -117,10 +122,12 @@ namespace Blackjack_CSC470
 
         private void hit_Click(object sender, EventArgs e)
         {
-            //player draws card, adds value to handvalue, and card to hand.
-            thePlayer.playerhit();
             //players new card is displayed
-            
+            Playercards[Playercardvisible].Visible = true;
+            //player draws card, adds value to handvalue, and card to hand.
+            Playercards[Playercardvisible].Image=thePlayer.playerhit().CardFront();
+            Playercardvisible++;
+            //assign card image to picturebox
         }
 
         private void stand_Click(object sender, EventArgs e)
@@ -132,15 +139,15 @@ namespace Blackjack_CSC470
 
         private void betvalues_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            //bet values
         }
 
         private void Newgame_Click(object sender, EventArgs e)
         {
             theDeck.shuffledeck();
             Playercard1.Image = Card.GetBackImage();
-            Playercard1.Visible = true;
             Playercard2.Image = Card.GetBackImage();
+            Playercard1.Visible = true;
             Playercard2.Visible = true;
             Playercard3.Visible = false;
             Playercard4.Visible = false;
@@ -156,6 +163,12 @@ namespace Blackjack_CSC470
             Dealercard7.Visible = false;
             thePlayer.resetplayer();
             theDealer.resetdealer();
+            Playercardvisible = 0;
+        }
+
+        public PictureBox[] getdealerpicturebox()
+        {
+            return Dealercards;
         }
 
         private void pictureBox4_Click(object sender, EventArgs e)
@@ -194,6 +207,12 @@ namespace Blackjack_CSC470
             {
                 MessageBox.Show("Due to previously identified technical issues on your computer,\nwe cannot save your progrss. Goodbye.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBox1.DataSource = betsList;
+           
         }
     }
 }
