@@ -17,7 +17,8 @@ namespace Blackjack_CSC470
         Dealer theDealer = new Dealer(theDeck);
         Player thePlayer = new Player(theDeck);
         int PlayerBalance = 100;
-        int Playercardvisible = 0;
+        int Playercardvisible = 3;
+        int Dealercardvisible = 0;
         bool saveTheData = true;
         PictureBox[] Playercards = new PictureBox[7];
         PictureBox[] Dealercards = new PictureBox[7];
@@ -133,8 +134,13 @@ namespace Blackjack_CSC470
         private void stand_Click(object sender, EventArgs e)
         {
             //player chooses to stand. Start dealer functions
-            
-             theDealer.dealeraction(thePlayer.handvalue);
+            while (theDealer.getdealerhandvalue() < 21)
+            {
+                Dealercards[Dealercardvisible].Visible = true;
+                Dealercards[Dealercardvisible].Image = theDealer.getdealerslastcard().CardFront();
+                Dealercardvisible++;
+                theDealer.dealeraction(thePlayer.handvalue);
+            }
         }
 
         private void betvalues_SelectedIndexChanged(object sender, EventArgs e)
@@ -164,11 +170,6 @@ namespace Blackjack_CSC470
             thePlayer.resetplayer();
             theDealer.resetdealer();
             Playercardvisible = 0;
-        }
-
-        public PictureBox[] getdealerpicturebox()
-        {
-            return Dealercards;
         }
 
         private void pictureBox4_Click(object sender, EventArgs e)

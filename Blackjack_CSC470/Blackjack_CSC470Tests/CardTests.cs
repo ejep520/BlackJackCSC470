@@ -29,7 +29,8 @@ namespace Blackjack_CSC470.Tests
                 Card badCard = new Card(14, 5);
             }
             catch (ArgumentOutOfRangeException)
-            { }
+            { return; }
+            Assert.Fail();
         }
 
         [TestMethod()]
