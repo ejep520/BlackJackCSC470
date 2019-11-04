@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Blackjack_CSC470
 {
-    class Player
+    public class Player
     {
         public int handvalue = 0;
-        decimal balance;
         List<Card> playerhand = new List<Card>();
         Deck theDeck;
 

@@ -17,15 +17,17 @@ namespace Blackjack_CSC470
         Dealer theDealer = new Dealer(theDeck);
         Player thePlayer = new Player(theDeck);
         int PlayerBalance = 100;
-        int Playercardvisible = 3;
+        int playerbet;
+        int Playercardvisible = 0;
         int Dealercardvisible = 0;
         bool saveTheData = true;
         PictureBox[] Playercards = new PictureBox[7];
         PictureBox[] Dealercards = new PictureBox[7];
         bool isgameover = false;
+        bool hashit = false;
 
         //List<string> BetsList = new List<string>();
-        ComboBox betsList = new ComboBox();
+        // ComboBox betsList = new ComboBox();
         
         
         public Form1()
@@ -39,9 +41,20 @@ namespace Blackjack_CSC470
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            betsList.Items.Add("$5.00");
-            betsList.Items.Add("$10.00");
+            //betsList.Items.Add("$5.00");
+            //betsList.Items.Add("$10.00");
             //load player balance
+
+            ComboBox bets = new ComboBox();
+            bets.Location = new Point(490, 70);
+            bets.Size = new Size(82, 30);
+            bets.Name = "Current_Bet";
+            bets.Items.Add("$5.00");
+            bets.Items.Add("$10.00");
+            bets.Items.Add("$15.00");
+            this.Controls.Add(bets);
+
+
             StreamReader reader = null;
             try
             {
@@ -122,16 +135,14 @@ namespace Blackjack_CSC470
             Dealercards[6] = Dealercard7;
 
             //display first two cards for dealer like in normal gameplay
-            for (int i = 0; i <= 1; i++)
-            {
-                Dealercards[Dealercardvisible].Visible = true;
-                Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
-                Dealercardvisible++;
-            }
+            Dealercards[Dealercardvisible].Visible = true;
+            Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
+            Dealercardvisible++;
         }
 
         private void hit_Click(object sender, EventArgs e)
         {
+            hashit = true;
             if (Playercardvisible < 7)
             {
                 //players new card is displayed
@@ -149,6 +160,9 @@ namespace Blackjack_CSC470
 
         private void stand_Click(object sender, EventArgs e)
         {
+            //change second dealer card to show card front instead of back
+            Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
+            Dealercardvisible++;
             //player chooses to stand. Start dealer functions
             while (!isgameover)
             {
@@ -188,20 +202,13 @@ namespace Blackjack_CSC470
             thePlayer.resetplayer();
             theDealer.resetdealer();
             Playercardvisible = 0;
+            Dealercardvisible = 0;
+            isgameover = false;
+            Dealercards[Dealercardvisible].Visible = true;
+            Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
+            Dealercardvisible++;
         }
 
-        private void pictureBox4_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void pictureBox11_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
         private void Form1_Closing(object sender, EventArgs e)
         {
             if (saveTheData)
@@ -230,8 +237,9 @@ namespace Blackjack_CSC470
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            comboBox1.DataSource = betsList;
-           
+           // comboBox1.DataSource = betsList;
+           // if (!hashit)
+           //     playerbet = comboBox1.SelectedIndex;
         }
     }
 }

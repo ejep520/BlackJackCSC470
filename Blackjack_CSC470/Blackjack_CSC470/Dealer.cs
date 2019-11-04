@@ -96,6 +96,7 @@ namespace Blackjack_CSC470
         {
             handvalue = 0;
             dealerhand.Clear();
+            dealerdone = false;
         }
     }
 }

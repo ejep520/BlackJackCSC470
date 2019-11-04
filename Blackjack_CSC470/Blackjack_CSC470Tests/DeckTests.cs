@@ -41,11 +41,11 @@ namespace Blackjack_CSC470.Tests
             }
             catch (ArgumentNullException)
             {
-                return;
+                throw;
             }
             catch (InvalidOperationException)
             {
-                throw;
+                return;
             }
             Assert.Fail();
             return;
