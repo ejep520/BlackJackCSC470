@@ -22,6 +22,7 @@ namespace Blackjack_CSC470
         bool saveTheData = true;
         PictureBox[] Playercards = new PictureBox[7];
         PictureBox[] Dealercards = new PictureBox[7];
+        bool isgameover = false;
 
         //List<string> BetsList = new List<string>();
         ComboBox betsList = new ComboBox();
@@ -119,27 +120,44 @@ namespace Blackjack_CSC470
             Dealercards[4] = Dealercard5;
             Dealercards[5] = Dealercard6;
             Dealercards[6] = Dealercard7;
+
+            //display first two cards for dealer like in normal gameplay
+            for (int i = 0; i <= 1; i++)
+            {
+                Dealercards[Dealercardvisible].Visible = true;
+                Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
+                Dealercardvisible++;
+            }
         }
 
         private void hit_Click(object sender, EventArgs e)
         {
-            //players new card is displayed
-            Playercards[Playercardvisible].Visible = true;
-            //player draws card, adds value to handvalue, and card to hand.
-            Playercards[Playercardvisible].Image=thePlayer.playerhit().CardFront();
-            Playercardvisible++;
-            //assign card image to picturebox
+            if (Playercardvisible < 7)
+            {
+                //players new card is displayed
+                Playercards[Playercardvisible].Visible = true;
+                //player draws card, adds value to handvalue, and card to hand.
+                Playercards[Playercardvisible].Image = thePlayer.playerhit().CardFront();
+                Playercardvisible++;
+                //assign card image to picturebox
+            }
+            else
+            {
+                MessageBox.Show("You have the max number of cards in hand\n you must stand");
+            }
         }
 
         private void stand_Click(object sender, EventArgs e)
         {
             //player chooses to stand. Start dealer functions
-            while (theDealer.getdealerhandvalue() < 21)
+            while (!isgameover)
             {
+                theDealer.dealeraction(thePlayer.handvalue);
                 Dealercards[Dealercardvisible].Visible = true;
                 Dealercards[Dealercardvisible].Image = theDealer.getdealerslastcard().CardFront();
                 Dealercardvisible++;
-                theDealer.dealeraction(thePlayer.handvalue);
+                if (theDealer.dealerdone)
+                    isgameover = true;
             }
         }
 

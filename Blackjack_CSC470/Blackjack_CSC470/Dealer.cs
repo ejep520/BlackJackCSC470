@@ -12,6 +12,7 @@ namespace Blackjack_CSC470
         int handvalue = 0;
         List<Card> dealerhand = new List<Card>();
         Deck theDeck;
+        public bool dealerdone = false;
         
         
         public Dealer(Deck thedeck)
@@ -19,7 +20,15 @@ namespace Blackjack_CSC470
             theDeck = thedeck;
         }
 
-        bool isdealerbusted()
+        public Card getonedealercard()
+        {
+            Card drawncard = theDeck.drawcard();
+            handvalue += drawncard.ValueOf;
+            dealerhand.Add(drawncard);
+            return drawncard;
+        }
+
+        public bool isdealerbusted()
         {
             if (handvalue > 21)
                 return true;
@@ -47,6 +56,7 @@ namespace Blackjack_CSC470
                     Card drawncard = theDeck.drawcard();
                     //add card value to handvalue
                     handvalue += drawncard.ValueOf;
+                    dealerhand.Add(drawncard);
                     //assign card image to picturebox
                 }
                 else
@@ -73,6 +83,7 @@ namespace Blackjack_CSC470
                         //save player balance
                         //exit
                     }
+                    dealerdone = true;
                 }
             }
             else
