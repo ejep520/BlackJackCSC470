@@ -74,7 +74,6 @@
             this.Playercard1.Size = new System.Drawing.Size(135, 155);
             this.Playercard1.TabIndex = 0;
             this.Playercard1.TabStop = false;
-            this.Playercard1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // Playercard2
             // 
@@ -108,7 +107,6 @@
             this.Dealercard2.Size = new System.Drawing.Size(135, 155);
             this.Dealercard2.TabIndex = 3;
             this.Dealercard2.TabStop = false;
-            this.Dealercard2.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
             // HitButton
             // 
@@ -212,7 +210,6 @@
             this.Playercard6.Size = new System.Drawing.Size(135, 155);
             this.Playercard6.TabIndex = 12;
             this.Playercard6.TabStop = false;
-            this.Playercard6.Click += new System.EventHandler(this.pictureBox11_Click);
             // 
             // Dealercard6
             // 

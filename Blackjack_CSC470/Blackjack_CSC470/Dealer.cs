@@ -14,7 +14,6 @@ namespace Blackjack_CSC470
         Deck theDeck;
         public bool dealerdone = false;
         
-        
         public Dealer(Deck thedeck)
         {
             theDeck = thedeck;
@@ -30,10 +29,7 @@ namespace Blackjack_CSC470
 
         public bool isdealerbusted()
         {
-            if (handvalue > 21)
-                return true;
-            else
-                return false;
+            return handvalue > 21;
         }
 
         public Card getdealerslastcard()
@@ -46,7 +42,7 @@ namespace Blackjack_CSC470
             return handvalue;
         }
 
-        public void dealeraction(int playerHandValue)
+        public void dealeraction(int playerHandValue, int betAmount)
         {
             if (!isdealerbusted())
             {
@@ -61,25 +57,25 @@ namespace Blackjack_CSC470
                 }
                 else
                 {
-                    Console.WriteLine("Dealer Stands");  //stands
+                    MessageBox.Show("Dealer stands.");  //stands
                     //compare player and dealer hands
                     if (handvalue > playerHandValue)
                     {
                         //print dealer wins
-                        MessageBox.Show("Dealer Wins! You lose 'X' amount of money.");
+                        MessageBox.Show(string.Format("Dealer Wins! You lose ${0}", betAmount));
                         //subtract bet from player balance
                         //exit
                     }
                     else if (handvalue < playerHandValue)
                     {//print player wins
-                        MessageBox.Show("Player Wins! You win 'X' amount of money.");
+                        MessageBox.Show(string.Format("Player Wins! You win ${0}!", betAmount));
                         //add bet to player balance
                         //exit
                     }
                     else
                     {
                         //print push/tie game
-                        MessageBox.Show("Push. You get your 'bet' amount back.");
+                        MessageBox.Show(string.Format("Push. You get your bet of ${0} back.", betAmount));
                         //save player balance
                         //exit
                     }
@@ -88,7 +84,8 @@ namespace Blackjack_CSC470
             }
             else
             {
-                Console.WriteLine("Dealer is busted!");//say dealer is busted
+                MessageBox.Show("The dealer is busted!");//say dealer is busted
+                dealerdone = true;
             }
         }
 
@@ -96,6 +93,7 @@ namespace Blackjack_CSC470
         {
             handvalue = 0;
             dealerhand.Clear();
+            dealerdone = false;
         }
     }
 }
