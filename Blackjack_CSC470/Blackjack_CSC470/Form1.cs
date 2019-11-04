@@ -17,7 +17,7 @@ namespace Blackjack_CSC470
         Dealer theDealer = new Dealer(theDeck);
         Player thePlayer = new Player(theDeck);
         int PlayerBalance = 100;
-        int playerbet;
+        int playerbet = 0;
         int Playercardvisible = 0;
         int Dealercardvisible = 0;
         bool saveTheData = true;
@@ -166,7 +166,7 @@ namespace Blackjack_CSC470
             //player chooses to stand. Start dealer functions
             while (!isgameover)
             {
-                theDealer.dealeraction(thePlayer.handvalue);
+                theDealer.dealeraction(thePlayer.handvalue, playerbet);
                 Dealercards[Dealercardvisible].Visible = true;
                 Dealercards[Dealercardvisible].Image = theDealer.getdealerslastcard().CardFront();
                 Dealercardvisible++;
