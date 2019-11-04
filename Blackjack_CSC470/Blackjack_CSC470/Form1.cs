@@ -16,7 +16,7 @@ namespace Blackjack_CSC470
         static Deck theDeck = new Deck();
         Dealer theDealer = new Dealer(theDeck);
         Player thePlayer = new Player(theDeck);
-        int PlayerBalance = 100;
+        public int PlayerBalance = 100;
         int playerbet = 0;
         int Playercardvisible = 0;
         int Dealercardvisible = 0;
@@ -24,8 +24,7 @@ namespace Blackjack_CSC470
         PictureBox[] Playercards = new PictureBox[7];
         PictureBox[] Dealercards = new PictureBox[7];
         bool isgameover = false;
-        bool hashit = false;
-
+        bool hashit;
         //List<string> BetsList = new List<string>();
         // ComboBox betsList = new ComboBox();
         
@@ -33,28 +32,21 @@ namespace Blackjack_CSC470
         public Form1()
         {
             InitializeComponent();
-
+            PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
             //game loop (work in progress)
         }
 
-        
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //betsList.Items.Add("$5.00");
-            //betsList.Items.Add("$10.00");
+            bets.Items.Add(0);
+            bets.Items.Add(5); //betsList.Items.Add("$5.00");
+            bets.Items.Add(10); //betsList.Items.Add("$10.00");
+            bets.Items.Add(15); //betsList.Items.Add("$15.00");
+            bets.SelectedIndex = 0;
+            _ = bets.Focus();
             //load player balance
-
-            ComboBox bets = new ComboBox();
-            bets.Location = new Point(490, 70);
-            bets.Size = new Size(82, 30);
-            bets.Name = "Current_Bet";
-            bets.Items.Add("$5.00");
-            bets.Items.Add("$10.00");
-            bets.Items.Add("$15.00");
-            this.Controls.Add(bets);
-
-
             StreamReader reader = null;
             try
             {
@@ -138,12 +130,25 @@ namespace Blackjack_CSC470
             Dealercards[Dealercardvisible].Visible = true;
             Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
             Dealercardvisible++;
+            PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
         }
 
         private void hit_Click(object sender, EventArgs e)
         {
-            hashit = true;
-            if (Playercardvisible < 7)
+            if (bets.SelectedIndex == 0)
+            {
+                MessageBox.Show("You have not placed your bet. Bet and then try again.");
+                return;
+            }
+            bets.Enabled = false;
+            if (!hashit)
+            {
+                PlayerBalance -= int.Parse(bets.SelectedItem.ToString());
+                playerbet = int.Parse(bets.SelectedItem.ToString());
+                hashit = true;
+            }
+            PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
+            if ((Playercardvisible < 7) && (thePlayer.handvalue < 21))
             {
                 //players new card is displayed
                 Playercards[Playercardvisible].Visible = true;
@@ -152,14 +157,36 @@ namespace Blackjack_CSC470
                 Playercardvisible++;
                 //assign card image to picturebox
             }
-            else
+            else if (Playercardvisible >= 7)
             {
                 MessageBox.Show("You have the max number of cards in hand\n you must stand");
             }
+            if (thePlayer.handvalue > 21)
+            {
+                MessageBox.Show("The player has busted!");
+                playerbet = 0;
+                bets.SelectedIndex = 0;
+                HitButton.Enabled = false;
+                StandButton.Enabled = false;
+                if (PlayerBalance < 5)
+                {
+                    MessageBox.Show("You are unable to make the minimum bet and must make room for another player.\nGoodbye.");
+                }
+            }
+            else if (thePlayer.handvalue == 21)
+            {
+                MessageBox.Show("Blackjack!");
+                PlayerBalance += (int)(playerbet * 2.5);
+                bets.SelectedIndex = 0;
+                HitButton.Enabled = false;
+                StandButton.Enabled = false;
+            }
+            PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
         }
 
         private void stand_Click(object sender, EventArgs e)
         {
+            bets.Enabled = false;
             //change second dealer card to show card front instead of back
             Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
             Dealercardvisible++;
@@ -170,8 +197,45 @@ namespace Blackjack_CSC470
                 Dealercards[Dealercardvisible].Visible = true;
                 Dealercards[Dealercardvisible].Image = theDealer.getdealerslastcard().CardFront();
                 Dealercardvisible++;
-                if (theDealer.dealerdone)
-                    isgameover = true;
+                if (theDealer.handvalue < 17)
+                { continue; }
+                else
+                { isgameover = true; }
+            }
+            //compare player and dealer hands
+            if (theDealer.handvalue > 21)
+            {
+                MessageBox.Show("The dealer has busted.\nPlayer wins.");
+                PlayerBalance += (playerbet * 2);
+            }
+            else if (theDealer.handvalue == thePlayer.handvalue)
+            {
+                //print push/tie game
+                MessageBox.Show(string.Format("Push. You get your bet of ${0} back.", playerbet));
+                //return player bet
+                PlayerBalance += playerbet;
+                //exit
+            }
+            else if (theDealer.handvalue > thePlayer.handvalue)
+            {
+                //print dealer wins
+                MessageBox.Show(string.Format("Dealer Wins! You lose ${0}", playerbet));
+                //exit
+            }
+            else if (theDealer.handvalue < thePlayer.handvalue)
+            {//print player wins
+                MessageBox.Show(string.Format("Player Wins! You win ${0}!", playerbet));
+                //add bet to player balance
+                PlayerBalance += (2 * playerbet);
+                //exit
+            }
+            playerbet = 0;
+            PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
+            bets.Enabled = true;
+            bets.SelectedIndex = 0;
+            if (PlayerBalance < 5)
+            {
+                MessageBox.Show(string.Format("You have {0} unable to make the minimum bet and must make room for another player.\nGoodbye.", PlayerBalance.ToString("C0")));
             }
         }
 
@@ -207,6 +271,9 @@ namespace Blackjack_CSC470
             Dealercards[Dealercardvisible].Visible = true;
             Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
             Dealercardvisible++;
+            HitButton.Enabled = true;
+            StandButton.Enabled = true;
+            Newgame.Enabled = false;
         }
 
         private void Form1_Closing(object sender, EventArgs e)

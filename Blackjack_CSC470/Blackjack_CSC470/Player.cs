@@ -24,10 +24,7 @@ namespace Blackjack_CSC470
 
         public bool isplayerbusted()
         {
-            if (handvalue > 21)
-                return true;
-            else
-                return false;
+            return handvalue > 21;
         }
 
         public Card playerhit()
