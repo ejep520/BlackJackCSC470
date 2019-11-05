@@ -69,10 +69,10 @@
             // 
             this.Playercard1.AccessibleName = "Playercard1";
             this.Playercard1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Playercard1.Location = new System.Drawing.Point(266, 42);
-            this.Playercard1.Margin = new System.Windows.Forms.Padding(2);
+            this.Playercard1.Location = new System.Drawing.Point(355, 52);
+            this.Playercard1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Playercard1.Name = "Playercard1";
-            this.Playercard1.Size = new System.Drawing.Size(101, 126);
+            this.Playercard1.Size = new System.Drawing.Size(135, 160);
             this.Playercard1.TabIndex = 0;
             this.Playercard1.TabStop = false;
             // 
@@ -80,10 +80,10 @@
             // 
             this.Playercard2.AccessibleName = "Playercard2";
             this.Playercard2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Playercard2.Location = new System.Drawing.Point(287, 64);
-            this.Playercard2.Margin = new System.Windows.Forms.Padding(2);
+            this.Playercard2.Location = new System.Drawing.Point(383, 79);
+            this.Playercard2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Playercard2.Name = "Playercard2";
-            this.Playercard2.Size = new System.Drawing.Size(101, 126);
+            this.Playercard2.Size = new System.Drawing.Size(135, 160);
             this.Playercard2.TabIndex = 1;
             this.Playercard2.TabStop = false;
             // 
@@ -91,10 +91,10 @@
             // 
             this.Dealercard1.AccessibleName = "Dealercard1";
             this.Dealercard1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Dealercard1.Location = new System.Drawing.Point(12, 42);
-            this.Dealercard1.Margin = new System.Windows.Forms.Padding(2);
+            this.Dealercard1.Location = new System.Drawing.Point(16, 52);
+            this.Dealercard1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Dealercard1.Name = "Dealercard1";
-            this.Dealercard1.Size = new System.Drawing.Size(101, 126);
+            this.Dealercard1.Size = new System.Drawing.Size(135, 160);
             this.Dealercard1.TabIndex = 2;
             this.Dealercard1.TabStop = false;
             // 
@@ -102,10 +102,10 @@
             // 
             this.Dealercard2.AccessibleName = "Dealercard2";
             this.Dealercard2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Dealercard2.Location = new System.Drawing.Point(28, 64);
-            this.Dealercard2.Margin = new System.Windows.Forms.Padding(2);
+            this.Dealercard2.Location = new System.Drawing.Point(37, 79);
+            this.Dealercard2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Dealercard2.Name = "Dealercard2";
-            this.Dealercard2.Size = new System.Drawing.Size(101, 126);
+            this.Dealercard2.Size = new System.Drawing.Size(135, 160);
             this.Dealercard2.TabIndex = 3;
             this.Dealercard2.TabStop = false;
             // 
@@ -113,10 +113,10 @@
             // 
             this.HitButton.AccessibleName = "Hitbutton";
             this.HitButton.BackColor = System.Drawing.Color.ForestGreen;
-            this.HitButton.Location = new System.Drawing.Point(490, 137);
-            this.HitButton.Margin = new System.Windows.Forms.Padding(2);
+            this.HitButton.Location = new System.Drawing.Point(653, 169);
+            this.HitButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.HitButton.Name = "HitButton";
-            this.HitButton.Size = new System.Drawing.Size(82, 30);
+            this.HitButton.Size = new System.Drawing.Size(109, 37);
             this.HitButton.TabIndex = 4;
             this.HitButton.Text = "Hit";
             this.HitButton.UseVisualStyleBackColor = false;
@@ -126,10 +126,10 @@
             // 
             this.StandButton.AccessibleName = "Standbutton";
             this.StandButton.BackColor = System.Drawing.Color.ForestGreen;
-            this.StandButton.Location = new System.Drawing.Point(490, 204);
-            this.StandButton.Margin = new System.Windows.Forms.Padding(2);
+            this.StandButton.Location = new System.Drawing.Point(653, 251);
+            this.StandButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StandButton.Name = "StandButton";
-            this.StandButton.Size = new System.Drawing.Size(82, 30);
+            this.StandButton.Size = new System.Drawing.Size(109, 37);
             this.StandButton.TabIndex = 5;
             this.StandButton.Text = "Stand";
             this.StandButton.UseVisualStyleBackColor = false;
@@ -139,10 +139,10 @@
             // 
             this.Playercard3.AccessibleName = "Playercard3";
             this.Playercard3.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Playercard3.Location = new System.Drawing.Point(301, 82);
-            this.Playercard3.Margin = new System.Windows.Forms.Padding(2);
+            this.Playercard3.Location = new System.Drawing.Point(401, 101);
+            this.Playercard3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Playercard3.Name = "Playercard3";
-            this.Playercard3.Size = new System.Drawing.Size(101, 126);
+            this.Playercard3.Size = new System.Drawing.Size(135, 160);
             this.Playercard3.TabIndex = 6;
             this.Playercard3.TabStop = false;
             // 
@@ -150,10 +150,10 @@
             // 
             this.Dealercard3.AccessibleName = "Dealercard3";
             this.Dealercard3.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Dealercard3.Location = new System.Drawing.Point(44, 82);
-            this.Dealercard3.Margin = new System.Windows.Forms.Padding(2);
+            this.Dealercard3.Location = new System.Drawing.Point(59, 101);
+            this.Dealercard3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Dealercard3.Name = "Dealercard3";
-            this.Dealercard3.Size = new System.Drawing.Size(101, 126);
+            this.Dealercard3.Size = new System.Drawing.Size(135, 160);
             this.Dealercard3.TabIndex = 7;
             this.Dealercard3.TabStop = false;
             // 
@@ -161,10 +161,10 @@
             // 
             this.Playercard4.AccessibleName = "Playercard2";
             this.Playercard4.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Playercard4.Location = new System.Drawing.Point(316, 105);
-            this.Playercard4.Margin = new System.Windows.Forms.Padding(2);
+            this.Playercard4.Location = new System.Drawing.Point(421, 129);
+            this.Playercard4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Playercard4.Name = "Playercard4";
-            this.Playercard4.Size = new System.Drawing.Size(101, 126);
+            this.Playercard4.Size = new System.Drawing.Size(135, 160);
             this.Playercard4.TabIndex = 8;
             this.Playercard4.TabStop = false;
             // 
@@ -172,10 +172,10 @@
             // 
             this.Dealercard4.AccessibleName = "Dealercard4";
             this.Dealercard4.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Dealercard4.Location = new System.Drawing.Point(56, 105);
-            this.Dealercard4.Margin = new System.Windows.Forms.Padding(2);
+            this.Dealercard4.Location = new System.Drawing.Point(75, 129);
+            this.Dealercard4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Dealercard4.Name = "Dealercard4";
-            this.Dealercard4.Size = new System.Drawing.Size(101, 126);
+            this.Dealercard4.Size = new System.Drawing.Size(135, 160);
             this.Dealercard4.TabIndex = 9;
             this.Dealercard4.TabStop = false;
             // 
@@ -183,10 +183,10 @@
             // 
             this.Playercard5.AccessibleName = "Playercard5";
             this.Playercard5.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Playercard5.Location = new System.Drawing.Point(332, 123);
-            this.Playercard5.Margin = new System.Windows.Forms.Padding(2);
+            this.Playercard5.Location = new System.Drawing.Point(443, 151);
+            this.Playercard5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Playercard5.Name = "Playercard5";
-            this.Playercard5.Size = new System.Drawing.Size(101, 126);
+            this.Playercard5.Size = new System.Drawing.Size(135, 160);
             this.Playercard5.TabIndex = 10;
             this.Playercard5.TabStop = false;
             // 
@@ -194,10 +194,10 @@
             // 
             this.Dealercard5.AccessibleName = "Dealercard5";
             this.Dealercard5.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Dealercard5.Location = new System.Drawing.Point(70, 123);
-            this.Dealercard5.Margin = new System.Windows.Forms.Padding(2);
+            this.Dealercard5.Location = new System.Drawing.Point(93, 151);
+            this.Dealercard5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Dealercard5.Name = "Dealercard5";
-            this.Dealercard5.Size = new System.Drawing.Size(101, 126);
+            this.Dealercard5.Size = new System.Drawing.Size(135, 160);
             this.Dealercard5.TabIndex = 11;
             this.Dealercard5.TabStop = false;
             // 
@@ -205,10 +205,10 @@
             // 
             this.Playercard6.AccessibleName = "Playercard6";
             this.Playercard6.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Playercard6.Location = new System.Drawing.Point(346, 149);
-            this.Playercard6.Margin = new System.Windows.Forms.Padding(2);
+            this.Playercard6.Location = new System.Drawing.Point(461, 183);
+            this.Playercard6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Playercard6.Name = "Playercard6";
-            this.Playercard6.Size = new System.Drawing.Size(101, 126);
+            this.Playercard6.Size = new System.Drawing.Size(135, 160);
             this.Playercard6.TabIndex = 12;
             this.Playercard6.TabStop = false;
             // 
@@ -216,10 +216,10 @@
             // 
             this.Dealercard6.AccessibleName = "Dealercard6";
             this.Dealercard6.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Dealercard6.Location = new System.Drawing.Point(83, 149);
-            this.Dealercard6.Margin = new System.Windows.Forms.Padding(2);
+            this.Dealercard6.Location = new System.Drawing.Point(111, 183);
+            this.Dealercard6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Dealercard6.Name = "Dealercard6";
-            this.Dealercard6.Size = new System.Drawing.Size(101, 126);
+            this.Dealercard6.Size = new System.Drawing.Size(135, 160);
             this.Dealercard6.TabIndex = 13;
             this.Dealercard6.TabStop = false;
             // 
@@ -227,10 +227,10 @@
             // 
             this.Playercard7.AccessibleName = "Playercard7";
             this.Playercard7.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Playercard7.Location = new System.Drawing.Point(367, 165);
-            this.Playercard7.Margin = new System.Windows.Forms.Padding(2);
+            this.Playercard7.Location = new System.Drawing.Point(489, 203);
+            this.Playercard7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Playercard7.Name = "Playercard7";
-            this.Playercard7.Size = new System.Drawing.Size(101, 126);
+            this.Playercard7.Size = new System.Drawing.Size(135, 160);
             this.Playercard7.TabIndex = 14;
             this.Playercard7.TabStop = false;
             // 
@@ -238,10 +238,10 @@
             // 
             this.Dealercard7.AccessibleName = "Dealercard7";
             this.Dealercard7.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Dealercard7.Location = new System.Drawing.Point(98, 165);
-            this.Dealercard7.Margin = new System.Windows.Forms.Padding(2);
+            this.Dealercard7.Location = new System.Drawing.Point(131, 203);
+            this.Dealercard7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Dealercard7.Name = "Dealercard7";
-            this.Dealercard7.Size = new System.Drawing.Size(101, 126);
+            this.Dealercard7.Size = new System.Drawing.Size(135, 160);
             this.Dealercard7.TabIndex = 15;
             this.Dealercard7.TabStop = false;
             // 
@@ -249,10 +249,10 @@
             // 
             this.textBox1.BackColor = System.Drawing.Color.ForestGreen;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Location = new System.Drawing.Point(266, 11);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox1.Location = new System.Drawing.Point(355, 14);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(38, 13);
+            this.textBox1.Size = new System.Drawing.Size(51, 15);
             this.textBox1.TabIndex = 16;
             this.textBox1.Text = "Player";
             // 
@@ -260,20 +260,20 @@
             // 
             this.textBox2.BackColor = System.Drawing.Color.ForestGreen;
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox2.Location = new System.Drawing.Point(12, 11);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox2.Location = new System.Drawing.Point(16, 14);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(38, 13);
+            this.textBox2.Size = new System.Drawing.Size(51, 15);
             this.textBox2.TabIndex = 17;
             this.textBox2.Text = "Dealer";
             // 
             // Newgame
             // 
             this.Newgame.BackColor = System.Drawing.Color.ForestGreen;
-            this.Newgame.Location = new System.Drawing.Point(490, 326);
-            this.Newgame.Margin = new System.Windows.Forms.Padding(2);
+            this.Newgame.Location = new System.Drawing.Point(653, 401);
+            this.Newgame.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Newgame.Name = "Newgame";
-            this.Newgame.Size = new System.Drawing.Size(82, 30);
+            this.Newgame.Size = new System.Drawing.Size(109, 37);
             this.Newgame.TabIndex = 19;
             this.Newgame.Text = "New Game";
             this.Newgame.UseVisualStyleBackColor = false;
@@ -283,25 +283,27 @@
             // 
             this.bets.FormatString = "C0";
             this.bets.FormattingEnabled = true;
-            this.bets.Location = new System.Drawing.Point(490, 70);
+            this.bets.Location = new System.Drawing.Point(653, 86);
+            this.bets.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.bets.Name = "bets";
-            this.bets.Size = new System.Drawing.Size(82, 21);
+            this.bets.Size = new System.Drawing.Size(108, 24);
             this.bets.TabIndex = 20;
             // 
             // PlayerBalanceLabel
             // 
             this.PlayerBalanceLabel.AutoSize = true;
-            this.PlayerBalanceLabel.Location = new System.Drawing.Point(487, 42);
+            this.PlayerBalanceLabel.Location = new System.Drawing.Point(649, 52);
+            this.PlayerBalanceLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.PlayerBalanceLabel.Name = "PlayerBalanceLabel";
-            this.PlayerBalanceLabel.Size = new System.Drawing.Size(243, 13);
+            this.PlayerBalanceLabel.Size = new System.Drawing.Size(0, 17);
             this.PlayerBalanceLabel.TabIndex = 21;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.ForestGreen;
-            this.ClientSize = new System.Drawing.Size(600, 366);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.PlayerBalanceLabel);
             this.Controls.Add(this.Newgame);
             this.Controls.Add(this.textBox2);
@@ -323,7 +325,7 @@
             this.Controls.Add(this.Playercard2);
             this.Controls.Add(this.Playercard1);
             this.Controls.Add(this.bets);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_Closing);
