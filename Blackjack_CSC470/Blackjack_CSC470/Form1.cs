@@ -274,6 +274,9 @@ namespace Blackjack_CSC470
             HitButton.Enabled = true;
             StandButton.Enabled = true;
             Newgame.Enabled = false;
+            _ = bets.Focus();
+            bets.Enabled = true;
+            bets.SelectedIndex = 0;
         }
 
         private void Form1_Closing(object sender, EventArgs e)
