@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Blackjack_CSC470
 {
-    class Dealer
+    public class Dealer
     {
         public int handvalue = 0;
         List<Card> dealerhand = new List<Card>();
