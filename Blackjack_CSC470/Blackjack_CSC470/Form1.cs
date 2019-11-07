@@ -131,10 +131,13 @@ namespace Blackjack_CSC470
             Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
             Dealercardvisible++;
             PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
+            StandButton.Enabled = false;
         }
 
         private void hit_Click(object sender, EventArgs e)
         {
+            StandButton.Enabled = true;
+            Newgame.Enabled = true;
             if (bets.SelectedIndex == 0)
             {
                 MessageBox.Show("You have not placed your bet. Bet and then try again.");
@@ -187,9 +190,6 @@ namespace Blackjack_CSC470
         private void stand_Click(object sender, EventArgs e)
         {
             bets.Enabled = false;
-            //change second dealer card to show card front instead of back
-            Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
-            Dealercardvisible++;
             //player chooses to stand. Start dealer functions
             while (!isgameover)
             {
@@ -220,6 +220,7 @@ namespace Blackjack_CSC470
             {
                 //print dealer wins
                 MessageBox.Show(string.Format("Dealer Wins! You lose ${0}", playerbet));
+                PlayerBalance -= playerbet;
                 //exit
             }
             else if (theDealer.handvalue < thePlayer.handvalue)
@@ -229,14 +230,14 @@ namespace Blackjack_CSC470
                 PlayerBalance += (2 * playerbet);
                 //exit
             }
-            playerbet = 0;
             PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
-            bets.Enabled = true;
-            bets.SelectedIndex = 0;
             if (PlayerBalance < 5)
             {
                 MessageBox.Show(string.Format("You have {0} unable to make the minimum bet and must make room for another player.\nGoodbye.", PlayerBalance.ToString("C0")));
             }
+            HitButton.Enabled = false;
+            StandButton.Enabled = false;
+            Newgame.Enabled = true;
         }
 
         private void betvalues_SelectedIndexChanged(object sender, EventArgs e)
@@ -277,6 +278,9 @@ namespace Blackjack_CSC470
             _ = bets.Focus();
             bets.Enabled = true;
             bets.SelectedIndex = 0;
+            playerbet = 0;
+            HitButton.Enabled = true;
+            StandButton.Enabled = false;
         }
 
         private void Form1_Closing(object sender, EventArgs e)
