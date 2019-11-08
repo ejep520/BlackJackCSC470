@@ -10,16 +10,21 @@ namespace Blackjack_CSC470
     {
         // int Num_Cards = 52;
         // int oncard = 0;
+        private const int decks = 1; // How many decks are getting shuffled together?
+
         private List<Card> deck = new List<Card>();
         private HashSet<Card> shuffledCards = new HashSet<Card>();
         public Deck()
         {
             deck.Clear();
-            for (int counter = 0; counter < 4; counter++)
+            for (int deckNo = 0; deckNo < decks; deckNo++)
             {
-                for (int face = 1; face < 14; face++)
+                for (int suit = 0; suit < 4; suit++)
                 {
-                    deck.Add(new Card(face, counter));
+                    for (int face = 1; face < 14; face++)
+                    {
+                        deck.Add(new Card(face, suit, deckNo));
+                    }
                 }
             }
             shuffledeck();

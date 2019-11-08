@@ -14,6 +14,7 @@ namespace Blackjack_CSC470
     /// </summary>
     public class Card
     {
+        private int _deckNo = 0;
         private int _valueOf = 2;
         private int _suit = 0;
         private int _face = 1;
@@ -55,11 +56,12 @@ namespace Blackjack_CSC470
         /// </item>
         /// </list>
         /// </param>
-        public Card(int SetFace, int SetSuit)
+        public Card(int SetFace, int SetSuit, int SetDeck)
         {
             Face = SetFace;
             ValueOf = SetFace;
             Suit = SetSuit;
+            DeckNo = SetDeck;
         }
 ///<returns>
 ///This returns a bitmap of the front of the card.
@@ -173,6 +175,23 @@ namespace Blackjack_CSC470
             }
             get => _suit;
         }
+        /// <summary>
+        /// This represents the deck number of the card. This allows for multiple instances of the same card to appear in the same deck.
+        /// </summary>
+        public int DeckNo
+        {
+            get => _deckNo;
+            private set
+            {
+                if (value >= 0)
+                {
+                    _deckNo = value;
+                }
+                else
+                { throw new ArgumentOutOfRangeException("The deck number may not be negative", (Exception)null); }
+            }
+        }
+
         /// <summary>
         /// <para>This represents the face value. This is different from the value.</para>
         /// <seealso cref="ValueOf"/>
