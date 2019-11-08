@@ -130,13 +130,15 @@ namespace Blackjack_CSC470
             Dealercards[Dealercardvisible].Visible = true;
             Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
             Dealercardvisible++;
+            Playercards[Playercardvisible].Image = thePlayer.playerhit().CardFront();
+            Playercardvisible++;
+            Playercards[Playercardvisible].Image = thePlayer.playerhit().CardFront();
+            Playercardvisible++;
             PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
-            StandButton.Enabled = false;
         }
 
         private void hit_Click(object sender, EventArgs e)
         {
-            StandButton.Enabled = true;
             Newgame.Enabled = true;
             if (bets.SelectedIndex == 0)
             {
@@ -189,6 +191,12 @@ namespace Blackjack_CSC470
 
         private void stand_Click(object sender, EventArgs e)
         {
+            if (!hashit)
+            {
+                PlayerBalance -= int.Parse(bets.SelectedItem.ToString());
+                playerbet = int.Parse(bets.SelectedItem.ToString());
+                hashit = true;
+            }
             bets.Enabled = false;
             //player chooses to stand. Start dealer functions
             while (!isgameover)
@@ -219,8 +227,7 @@ namespace Blackjack_CSC470
             else if (theDealer.handvalue > thePlayer.handvalue)
             {
                 //print dealer wins
-                MessageBox.Show(string.Format("Dealer Wins! You lose ${0}", playerbet));
-                PlayerBalance -= playerbet;
+                MessageBox.Show(string.Format("Dealer Wins! You lost ${0}", playerbet));
                 //exit
             }
             else if (theDealer.handvalue < thePlayer.handvalue)
@@ -272,6 +279,11 @@ namespace Blackjack_CSC470
             Dealercards[Dealercardvisible].Visible = true;
             Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
             Dealercardvisible++;
+            Playercards[Playercardvisible].Image = thePlayer.playerhit().CardFront();
+            Playercardvisible++;
+            Playercards[Playercardvisible].Image = thePlayer.playerhit().CardFront();
+            Playercardvisible++;
+            hashit = false;
             HitButton.Enabled = true;
             StandButton.Enabled = true;
             Newgame.Enabled = false;
@@ -280,7 +292,6 @@ namespace Blackjack_CSC470
             bets.SelectedIndex = 0;
             playerbet = 0;
             HitButton.Enabled = true;
-            StandButton.Enabled = false;
         }
 
         private void Form1_Closing(object sender, EventArgs e)
