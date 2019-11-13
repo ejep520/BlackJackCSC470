@@ -5,6 +5,8 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -25,6 +27,9 @@ namespace Blackjack_CSC470
         PictureBox[] Dealercards = new PictureBox[7];
         bool isgameover = false;
         bool hashit;
+        public List<User> users = new List<User>();
+        private IFormatter formatter = new BinaryFormatter();
+        private Guid LoggedInPlayer;
         //List<string> BetsList = new List<string>();
         // ComboBox betsList = new ComboBox();
         
@@ -32,25 +37,20 @@ namespace Blackjack_CSC470
         public Form1()
         {
             InitializeComponent();
-            PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
-            //game loop (work in progress)
         }
-
-
-
         private void Form1_Load(object sender, EventArgs e)
         {
             bets.Items.Add(0);
-            bets.Items.Add(5); //betsList.Items.Add("$5.00");
             bets.Items.Add(10); //betsList.Items.Add("$10.00");
-            bets.Items.Add(15); //betsList.Items.Add("$15.00");
+            bets.Items.Add(20); //betsList.Items.Add("$20.00");
+            bets.Items.Add(30); //betsList.Items.Add("$30.00");
             bets.SelectedIndex = 0;
             _ = bets.Focus();
             //load player balance
-            StreamReader reader = null;
+            FileStream reader = null;
             try
             {
-                reader = File.OpenText(Path.Combine(Application.UserAppDataPath, "BlackJack07", "Balance.sav"));
+                reader = File.Open(Path.Combine(Application.UserAppDataPath, "BlackJack07", "Balance.sav"), FileMode.Open);
             }
             catch (DirectoryNotFoundException)
             {
@@ -77,7 +77,7 @@ namespace Blackjack_CSC470
                 {
                     try
                     {
-                        PlayerBalance = int.Parse(reader.ReadToEnd());
+                        users = (List<User>)formatter.Deserialize(reader);
                     }
                     catch (FormatException) { }
                     catch (OverflowException)
@@ -164,7 +164,7 @@ namespace Blackjack_CSC470
             }
             else if (Playercardvisible >= 7)
             {
-                MessageBox.Show("You have the max number of cards in hand\n you must stand");
+                MessageBox.Show("You have the max number of cards in hand.\nYou must stand.");
             }
             if (thePlayer.handvalue > 21)
             {
@@ -173,6 +173,7 @@ namespace Blackjack_CSC470
                 bets.SelectedIndex = 0;
                 HitButton.Enabled = false;
                 StandButton.Enabled = false;
+                _ = Newgame.Focus();
                 if (PlayerBalance < 5)
                 {
                     MessageBox.Show("You are unable to make the minimum bet and must make room for another player.\nGoodbye.");
@@ -185,6 +186,7 @@ namespace Blackjack_CSC470
                 bets.SelectedIndex = 0;
                 HitButton.Enabled = false;
                 StandButton.Enabled = false;
+                _ = Newgame.Focus();
             }
             PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
         }
@@ -245,6 +247,7 @@ namespace Blackjack_CSC470
             HitButton.Enabled = false;
             StandButton.Enabled = false;
             Newgame.Enabled = true;
+            _ = Newgame.Focus();
         }
 
         private void betvalues_SelectedIndexChanged(object sender, EventArgs e)
@@ -325,6 +328,17 @@ namespace Blackjack_CSC470
            // comboBox1.DataSource = betsList;
            // if (!hashit)
            //     playerbet = comboBox1.SelectedIndex;
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void userManagementToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UManage UserManagement = new UManage();
+            UserManagement.Show();
         }
     }
 }

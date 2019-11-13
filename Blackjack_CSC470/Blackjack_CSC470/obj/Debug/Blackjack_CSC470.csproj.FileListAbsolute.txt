@@ -16,3 +16,4 @@ C:\Users\ethan\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC47
 C:\Users\ethan\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\obj\Debug\Blackjack_CSC470.csproj.GenerateResource.cache
 C:\Users\ethan\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\obj\Debug\Blackjack_CSC470.exe
 C:\Users\ethan\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\obj\Debug\Blackjack_CSC470.pdb
+C:\Users\Erik0\Documents\GitHub\BlackJackCSC470\Blackjack_CSC470\Blackjack_CSC470\obj\Debug\Blackjack_CSC470.UManage.resources
