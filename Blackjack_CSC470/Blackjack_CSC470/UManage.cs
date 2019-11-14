@@ -57,38 +57,30 @@ namespace Blackjack_CSC470
              * Security question text box: Questionbox
              * Security question answer text box: Questionanswerbox
              */
-            //get username from Createusernamebox
+            bool isValid = true;
             string Username = Createusernamebox.Text;
-            // password from Createpasswordbox
-            string Password = Createpasswordbox.Text;
-            //get First name from Firstnamebox
-            string Firstname = Firstnamebox.Text;
-            //get Last name from Lastnamebox
+            string Password = string.Empty;
+            string Firstname = string.Empty;
             string Lastname = Lastnamebox.Text;
-            //get address from Addressbox
             string Address = Address1box.Text;
-            //city
+            string Address2 = Address2box.Text;
             string City = Citybox.Text;
-            //state
             string State = Statebox.Text;
-            //zip
             int zipcode = int.Parse(Zipbox.Text);
-            //parse phone # from Phonenumberbox
             string phonenumber = Phonenumberbox.Text;
-            //get creditcard from Creditcardbox
             string Creditcard = Creditcardbox.Text;
-            //ccv
             string CCV = CCVbox.Text;
-            //expdate
             string expdate = Expdatebox.Text;
-            //get security question from Questionbox
             string Securityquestion = Questionbox.Text;
-            //get security answer from Questionanswerbox
             string Securityquestionanswer = Questionanswerbox.Text;
 
-            User User1 = new User(Firstname, Lastname, Address, null, City, State, 
-                                    zipcode, Password, Creditcard, CCV, expdate,
-                                    Securityquestion, Securityquestionanswer); 
+            if (isValid)
+            {
+                User User1 = new User(Firstname, Lastname, Address, Address2, City, State,
+                                        zipcode, Password, Creditcard, CCV, expdate,
+                                        Securityquestion, Securityquestionanswer);
+                //write to user data file 
+            }
         }
         private void ChangePassWdButton_Click(object sender, EventArgs e)
         {
@@ -185,6 +177,11 @@ namespace Blackjack_CSC470
         private void UManage_FormClosing(object sender, FormClosingEventArgs e)
         {
             Dispose();
+        }
+
+        private void Edituserdata_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

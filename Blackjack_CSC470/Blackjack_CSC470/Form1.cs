@@ -77,7 +77,7 @@ namespace Blackjack_CSC470
                 {
                     try
                     {
-                        users = (List<User>)formatter.Deserialize(reader);
+                       users = (List<User>)formatter.Deserialize(reader);
                     }
                     catch (FormatException) { }
                     catch (OverflowException)
