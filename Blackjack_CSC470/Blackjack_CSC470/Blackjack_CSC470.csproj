@@ -49,11 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Card.cs" />
-    <Compile Include="Form2.cs">
+    <Compile Include="UManage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form2.Designer.cs">
-      <DependentUpon>Form2.cs</DependentUpon>
+    <Compile Include="UManage.Designer.cs">
+      <DependentUpon>UManage.cs</DependentUpon>
     </Compile>
     <Compile Include="User.cs" />
     <Compile Include="Deck.cs" />
@@ -70,8 +70,8 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form2.resx">
-      <DependentUpon>Form2.cs</DependentUpon>
+    <EmbeddedResource Include="UManage.resx">
+      <DependentUpon>UManage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -152,6 +152,16 @@
     <EmbeddedResource Include="Images\queen_of_hearts.png" />
     <EmbeddedResource Include="Images\queen_of_spades.png" />
     <EmbeddedResource Include="Images\red_joker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\american_express.gif" />
+    <EmbeddedResource Include="Images\ccv.gif" />
+    <EmbeddedResource Include="Images\discover.jpg" />
+    <EmbeddedResource Include="Images\mastercard.gif" />
+    <EmbeddedResource Include="Images\visa.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

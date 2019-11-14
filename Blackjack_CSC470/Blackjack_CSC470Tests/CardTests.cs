@@ -18,7 +18,7 @@ namespace Blackjack_CSC470.Tests
             // Arrange: Nothing to be arranged for this test.
             try
             {
-                Card test = new Card(1, 0); // Act: Can I create an ace of hearts?
+                Card test = new Card(1, 0, 0); // Act: Can I create an ace of hearts?
             }
             catch (Exception)
             {
@@ -27,7 +27,7 @@ namespace Blackjack_CSC470.Tests
             }
             try
             {
-                Card badCard = new Card(14, 5); // Act: Make a ... Dictator-for-life of ... um... nukes! This should fail.
+                Card badCard = new Card(14, 5, 0); // Act: Make a ... Dictator-for-life of ... um... nukes! This should fail.
             }
             catch (ArgumentOutOfRangeException) // This should fail. If it does,
             { return; } // Awesome. Test passes.
@@ -38,7 +38,7 @@ namespace Blackjack_CSC470.Tests
         public void CardFrontTest()
         {
             // Arrange:
-            Card card = new Card(1, 0); // Make an ace of hearts.
+            Card card = new Card(1, 0, 0); // Make an ace of hearts.
             Image image = card.CardFront(); // Act: Call the function to get the front of the card's image. Throw any exceptions as failures.
             return;// Assert: We got the image without exceptions? Awesome. Good night.
         }

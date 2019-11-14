@@ -11,10 +11,17 @@ namespace Blackjack_CSC470
         public int handvalue = 0;
         List<Card> playerhand = new List<Card>();
         Deck theDeck;
+        Guid UserID;
 
         public Player(Deck thedeck)
         {
             theDeck = thedeck;
+            UserID = new Guid();
+        }
+        public Player(Deck thedeck, Guid userID)
+        {
+            theDeck = thedeck;
+            UserID = userID;
         }
         public void addcardvalue(Card card)
         {
