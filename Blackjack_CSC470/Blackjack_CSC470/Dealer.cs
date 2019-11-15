@@ -10,7 +10,7 @@ namespace Blackjack_CSC470
     public class Dealer
     {
         public int handvalue = 0;
-        List<Card> dealerhand = new List<Card>();
+        private List<Card> privHand = new List<Card>();
         Deck theDeck;
         
         public Dealer(Deck thedeck)
@@ -22,7 +22,7 @@ namespace Blackjack_CSC470
         {
             Card drawncard = theDeck.drawcard();
             handvalue += drawncard.ValueOf;
-            dealerhand.Add(drawncard);
+            privHand.Add(drawncard);
             return drawncard;
         }
 
@@ -33,7 +33,7 @@ namespace Blackjack_CSC470
 
         public Card getdealerslastcard()
         {
-            return dealerhand.Last();
+            return privHand.Last();
         }
 
         public void dealeraction(int playerHandValue, int betAmount)
@@ -42,14 +42,18 @@ namespace Blackjack_CSC470
             Card drawncard = theDeck.drawcard();
             //add card value to handvalue
             handvalue += drawncard.ValueOf;
-            dealerhand.Add(drawncard);
+            privHand.Add(drawncard);
             //assign card image to picturebox
         }
 
         public void resetdealer()
         {
             handvalue = 0;
-            dealerhand.Clear();
+            privHand.Clear();
+        }
+        public IReadOnlyCollection<Card> DealerHand
+        {
+            get => privHand.AsReadOnly();
         }
     }
 }

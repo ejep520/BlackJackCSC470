@@ -30,6 +30,7 @@ namespace Blackjack_CSC470
         public List<User> users = new List<User>();
         private IFormatter formatter = new BinaryFormatter();
         private Guid LoggedInPlayer;
+        private SaveData saveData = null;
         //List<string> BetsList = new List<string>();
         // ComboBox betsList = new ComboBox();
         
@@ -46,6 +47,22 @@ namespace Blackjack_CSC470
             bets.Items.Add(30); //betsList.Items.Add("$30.00");
             bets.SelectedIndex = 0;
             _ = bets.Focus();
+
+            //set array for visible cards
+            Playercards[0] = Playercard1;
+            Playercards[1] = Playercard2;
+            Playercards[2] = Playercard3;
+            Playercards[3] = Playercard4;
+            Playercards[4] = Playercard5;
+            Playercards[5] = Playercard6;
+            Playercards[6] = Playercard7;
+            Dealercards[0] = Dealercard1;
+            Dealercards[1] = Dealercard2;
+            Dealercards[2] = Dealercard3;
+            Dealercards[3] = Dealercard4;
+            Dealercards[4] = Dealercard5;
+            Dealercards[5] = Dealercard6;
+            Dealercards[6] = Dealercard7;
             //load player balance
             FileStream reader = null;
             try
@@ -77,7 +94,7 @@ namespace Blackjack_CSC470
                 {
                     try
                     {
-                       users = (List<User>)formatter.Deserialize(reader);
+                       saveData = (SaveData)formatter.Deserialize(reader);
                     }
                     catch (FormatException) { }
                     catch (OverflowException)
@@ -86,45 +103,61 @@ namespace Blackjack_CSC470
                     }
                     reader.Close();
                 }
+                if (saveData != null)
+                {
+                    users = saveData.userlist;
+                    if (saveData.playStarted)
+                    {
+                        theDeck = saveData.deck;
+                        thePlayer = saveData.player;
+                        theDealer = saveData.dealer;
+                        bets.SelectedIndex = saveData.theBet;
+                        PlayerBalance = saveData.balance;
+                        Playercardvisible = saveData.Playercardvisible;
+                        Dealercardvisible = saveData.Dealercardvisible;
+                        for (int counter = 0; counter < Playercardvisible; counter++)
+                        {
+                            Playercards[counter].Visible = true;
+                            Playercards[counter].Image = thePlayer.PlayerHand.ElementAt(counter).CardFront();
+                        }
+                        for (int counter = Playercardvisible; counter < 7; counter++)
+                            Playercards[counter].Visible = false;
+                        for (int counter = 0; counter < Dealercardvisible; counter++)
+                        {
+                            Dealercards[counter].Visible = true;
+                            Dealercards[counter].Image = theDealer.DealerHand.ElementAt(counter).CardFront();
+                        }
+                        for (int counter = Dealercardvisible; counter < 7; counter++)
+                            Dealercards[counter].Visible = false;
+                    }
+                }
+                else
+                {
+
+                    Playercard1.Image = Card.GetBackImage();
+                    Playercard1.Visible = true;
+                    Playercard2.Image = Card.GetBackImage();
+                    Playercard2.Visible = true;
+                    //dealer
+                    Dealercard1.Image = Card.GetBackImage();
+                    Dealercard1.Visible = true;
+                    Dealercard2.Image = Card.GetBackImage();
+                    Dealercard2.Visible = true;
+                    //make unneeded cards invisible
+                    Playercard3.Visible = false;
+                    Playercard4.Visible = false;
+                    Playercard5.Visible = false;
+                    Playercard6.Visible = false;
+                    Playercard7.Visible = false;
+                    Dealercard3.Visible = false;
+                    Dealercard4.Visible = false;
+                    Dealercard5.Visible = false;
+                    Dealercard6.Visible = false;
+                    Dealercard7.Visible = false;
+                    //enter bet amount
+                }
             }
             //player
-            Playercard1.Image = Card.GetBackImage();
-            Playercard1.Visible = true;
-            Playercard2.Image = Card.GetBackImage();
-            Playercard2.Visible = true;
-            //dealer
-            Dealercard1.Image = Card.GetBackImage();
-            Dealercard1.Visible = true;
-            Dealercard2.Image = Card.GetBackImage();
-            Dealercard2.Visible = true;
-            //make unneeded cards invisible
-            Playercard3.Visible = false;
-            Playercard4.Visible = false;
-            Playercard5.Visible = false;
-            Playercard6.Visible = false;
-            Playercard7.Visible = false;
-            Dealercard3.Visible = false;
-            Dealercard4.Visible = false;
-            Dealercard5.Visible = false;
-            Dealercard6.Visible = false;
-            Dealercard7.Visible = false;
-            //enter bet amount
-
-            //set array for visible cards
-            Playercards[0] = Playercard1;
-            Playercards[1] = Playercard2;
-            Playercards[2] = Playercard3;
-            Playercards[3] = Playercard4;
-            Playercards[4] = Playercard5;
-            Playercards[5] = Playercard6;
-            Playercards[6] = Playercard7;
-            Dealercards[0] = Dealercard1;
-            Dealercards[1] = Dealercard2;
-            Dealercards[2] = Dealercard3;
-            Dealercards[3] = Dealercard4;
-            Dealercards[4] = Dealercard5;
-            Dealercards[5] = Dealercard6;
-            Dealercards[6] = Dealercard7;
 
             //display first two cards for dealer like in normal gameplay
             Dealercards[Dealercardvisible].Visible = true;
@@ -301,19 +334,31 @@ namespace Blackjack_CSC470
         {
             if (saveTheData)
             {
-                StreamWriter writer = null;
+                FileStream writer = null;
                 try
                 {
-                    writer = File.CreateText(Path.Combine(Application.UserAppDataPath, "BlackJack07", "Balance.sav"));
+                    writer = File.OpenWrite(Path.Combine(Application.UserAppDataPath, "BlackJack07", "Balance.sav"));
                 }
                 catch (DirectoryNotFoundException)
                 {
                     Directory.CreateDirectory(Path.Combine(Application.UserAppDataPath, "BlackJack07"));
-                    writer = File.CreateText(Path.Combine(Application.UserAppDataPath, "BlackJack07", "Balance.sav"));
+                    writer = File.OpenWrite(Path.Combine(Application.UserAppDataPath, "BlackJack07", "Balance.sav"));
                 }
                 finally
                 {
-                    writer.Write(PlayerBalance.ToString());
+                    saveData = new SaveData();
+                    saveData.userlist = users;
+                    saveData.playStarted = bets.SelectedIndex != 0;
+                    if (bets.SelectedIndex != 0)
+                    {
+                        saveData.theBet = bets.SelectedIndex;
+                        saveData.loggedInPlayer = LoggedInPlayer;
+                        saveData.deck = theDeck;
+                        saveData.dealer = theDealer;
+                        saveData.balance = PlayerBalance;
+                        saveData.player = thePlayer;
+                    }
+                    formatter.Serialize(writer, saveData);
                     writer.Close();
                 }
             }
@@ -321,13 +366,6 @@ namespace Blackjack_CSC470
             {
                 MessageBox.Show("Due to previously identified technical issues on your computer,\nwe cannot save your progrss. Goodbye.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-           // comboBox1.DataSource = betsList;
-           // if (!hashit)
-           //     playerbet = comboBox1.SelectedIndex;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)

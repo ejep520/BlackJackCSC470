@@ -9,7 +9,7 @@ namespace Blackjack_CSC470
     public class Player
     {
         public int handvalue = 0;
-        List<Card> playerhand = new List<Card>();
+        private List<Card> PrivHand = new List<Card>();
         Deck theDeck;
         Guid UserID;
 
@@ -26,7 +26,7 @@ namespace Blackjack_CSC470
         public void addcardvalue(Card card)
         {
             handvalue = handvalue + card.ValueOf;
-            playerhand.Add(card);
+            PrivHand.Add(card);
         }
 
         public bool isplayerbusted()
@@ -44,12 +44,16 @@ namespace Blackjack_CSC470
         public void resetplayer()
         {
             handvalue = 0;
-            playerhand.Clear();
+            PrivHand.Clear();
         }
 
         public Card getplayerhand()
         {
-            return playerhand.Last();
+            return PrivHand.Last();
+        }
+        public IReadOnlyCollection<Card> PlayerHand
+        {
+            get => PrivHand.AsReadOnly();
         }
     }
 }
