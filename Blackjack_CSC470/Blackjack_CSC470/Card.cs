@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Blackjack_CSC470
 {
+    [Serializable]
     /// <summary>
     /// Each instance of this class is a unique card.
     /// </summary>

@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace Blackjack_CSC470
 {
+    [Serializable]
     public class Player
     {
-        public int handvalue = 0;
+        public int HardHandValue = 0;
+        public int SoftHandValue = 0;
         private List<Card> PrivHand = new List<Card>();
         Deck theDeck;
-        Guid UserID;
+        public Guid UserID;
 
         public Player(Deck thedeck)
         {
             theDeck = thedeck;
-            UserID = new Guid();
+            UserID = Guid.NewGuid();
         }
         public Player(Deck thedeck, Guid userID)
         {
@@ -25,13 +27,17 @@ namespace Blackjack_CSC470
         }
         public void addcardvalue(Card card)
         {
-            handvalue = handvalue + card.ValueOf;
+            HardHandValue += card.ValueOf;
+            if (card.Face == 1)
+                SoftHandValue += 11;
+            else
+                SoftHandValue += card.ValueOf;
             PrivHand.Add(card);
         }
 
         public bool isplayerbusted()
         {
-            return handvalue > 21;
+            return HardHandValue > 21;
         }
 
         public Card playerhit()
@@ -43,7 +49,8 @@ namespace Blackjack_CSC470
 
         public void resetplayer()
         {
-            handvalue = 0;
+            HardHandValue = 0;
+            SoftHandValue = 0;
             PrivHand.Clear();
         }
 

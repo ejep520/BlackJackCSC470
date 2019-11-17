@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blackjack_CSC470
 {
+    [Serializable]
     public class Deck
     {
         // int Num_Cards = 52;
@@ -33,11 +34,11 @@ namespace Blackjack_CSC470
         {
             shuffledCards.Clear();
             Random random = new Random();
-            int getCard = random.Next() % 52;
-            while (shuffledCards.Count < 52)
+            int getCard = random.Next() % (52 * decks);
+            while (shuffledCards.Count < (52 * decks))
             {
                 shuffledCards.Add(deck[getCard]);
-                getCard = random.Next() % 52;
+                getCard = random.Next() % (52 * decks);
             }
             return;
         }

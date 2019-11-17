@@ -29,12 +29,8 @@ namespace Blackjack_CSC470
         bool hashit;
         public List<User> users = new List<User>();
         private IFormatter formatter = new BinaryFormatter();
-        private Guid LoggedInPlayer;
+        public Guid LoggedInPlayer;
         private SaveData saveData = null;
-        //List<string> BetsList = new List<string>();
-        // ComboBox betsList = new ComboBox();
-        
-        
         public Form1()
         {
             InitializeComponent();
@@ -78,7 +74,7 @@ namespace Blackjack_CSC470
             {
                 File.Create(Path.Combine(Application.UserAppDataPath, "BlackJack07", "Balance.sav")).Close();
             }
-            catch(PathTooLongException)
+            catch (PathTooLongException)
             {
                 MessageBox.Show("Due to technical issues, we cannot retrieve or save the balance of your game today. Sorry!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 saveTheData = false;
@@ -94,79 +90,55 @@ namespace Blackjack_CSC470
                 {
                     try
                     {
-                       saveData = (SaveData)formatter.Deserialize(reader);
+                        saveData = (SaveData)formatter.Deserialize(reader);
                     }
-                    catch (FormatException) { }
-                    catch (OverflowException)
+                    catch (FormatException) { saveData = null; }
+                    catch (SerializationException)
                     {
-                        MessageBox.Show("There was an overflow error!");
+                        saveData = null;
                     }
+                    catch (EndOfStreamException)
+                    {
+                        saveData = null;
+                    }
+                    catch (OverflowException)
+                    { }
                     reader.Close();
                 }
-                if (saveData != null)
+            }
+            if (saveData != null)
+            {
+                users = saveData.userlist;
+                PlayerBalance = saveData.balance;
+                LoggedInPlayer = saveData.LoggedInPlayer;
+                if (saveData.playStarted)
                 {
-                    users = saveData.userlist;
-                    if (saveData.playStarted)
+                    theDeck = saveData.deck;
+                    thePlayer = saveData.player;
+                    theDealer = saveData.dealer;
+                    bets.SelectedIndex = saveData.theBet;
+                    Playercardvisible = saveData.Playercardvisible;
+                    Dealercardvisible = saveData.Dealercardvisible;
+                    for (int counter = 0; counter < 7; counter++)
                     {
-                        theDeck = saveData.deck;
-                        thePlayer = saveData.player;
-                        theDealer = saveData.dealer;
-                        bets.SelectedIndex = saveData.theBet;
-                        PlayerBalance = saveData.balance;
-                        Playercardvisible = saveData.Playercardvisible;
-                        Dealercardvisible = saveData.Dealercardvisible;
-                        for (int counter = 0; counter < Playercardvisible; counter++)
+                        Playercards[counter].Visible = saveData.PlayerVisibleBools[counter];
+                        Dealercards[counter].Visible = saveData.DealerVisibleBools[counter];
+                        if (Playercards[counter].Visible)
+                        { Playercards[counter].Image = thePlayer.PlayerHand.ElementAt(counter).CardFront(); }
+                        if (Dealercards[counter].Visible)
                         {
-                            Playercards[counter].Visible = true;
-                            Playercards[counter].Image = thePlayer.PlayerHand.ElementAt(counter).CardFront();
+                            if (counter == 0)
+                            { Dealercards[counter].Image = theDealer.DealerHand.ElementAt(counter).CardFront(); }
+                            else
+                            { Dealercards[counter].Image = Card.GetBackImage(); }
                         }
-                        for (int counter = Playercardvisible; counter < 7; counter++)
-                            Playercards[counter].Visible = false;
-                        for (int counter = 0; counter < Dealercardvisible; counter++)
-                        {
-                            Dealercards[counter].Visible = true;
-                            Dealercards[counter].Image = theDealer.DealerHand.ElementAt(counter).CardFront();
-                        }
-                        for (int counter = Dealercardvisible; counter < 7; counter++)
-                            Dealercards[counter].Visible = false;
                     }
                 }
                 else
-                {
-
-                    Playercard1.Image = Card.GetBackImage();
-                    Playercard1.Visible = true;
-                    Playercard2.Image = Card.GetBackImage();
-                    Playercard2.Visible = true;
-                    //dealer
-                    Dealercard1.Image = Card.GetBackImage();
-                    Dealercard1.Visible = true;
-                    Dealercard2.Image = Card.GetBackImage();
-                    Dealercard2.Visible = true;
-                    //make unneeded cards invisible
-                    Playercard3.Visible = false;
-                    Playercard4.Visible = false;
-                    Playercard5.Visible = false;
-                    Playercard6.Visible = false;
-                    Playercard7.Visible = false;
-                    Dealercard3.Visible = false;
-                    Dealercard4.Visible = false;
-                    Dealercard5.Visible = false;
-                    Dealercard6.Visible = false;
-                    Dealercard7.Visible = false;
-                    //enter bet amount
-                }
+                { NewGameMethod(); }
             }
-            //player
-
-            //display first two cards for dealer like in normal gameplay
-            Dealercards[Dealercardvisible].Visible = true;
-            Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
-            Dealercardvisible++;
-            Playercards[Playercardvisible].Image = thePlayer.playerhit().CardFront();
-            Playercardvisible++;
-            Playercards[Playercardvisible].Image = thePlayer.playerhit().CardFront();
-            Playercardvisible++;
+            else
+            { NewGameMethod(); }
             PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
         }
 
@@ -186,11 +158,11 @@ namespace Blackjack_CSC470
                 hashit = true;
             }
             PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
-            if ((Playercardvisible < 7) && (thePlayer.handvalue < 21))
+            if ((Playercardvisible < 7) && (thePlayer.HardHandValue < 21))
             {
                 //players new card is displayed
                 Playercards[Playercardvisible].Visible = true;
-                //player draws card, adds value to handvalue, and card to hand.
+                //player draws card, adds value to HardHandValue, and card to hand.
                 Playercards[Playercardvisible].Image = thePlayer.playerhit().CardFront();
                 Playercardvisible++;
                 //assign card image to picturebox
@@ -199,7 +171,7 @@ namespace Blackjack_CSC470
             {
                 MessageBox.Show("You have the max number of cards in hand.\nYou must stand.");
             }
-            if (thePlayer.handvalue > 21)
+            if (thePlayer.HardHandValue > 21)
             {
                 MessageBox.Show("The player has busted!");
                 playerbet = 0;
@@ -212,7 +184,7 @@ namespace Blackjack_CSC470
                     MessageBox.Show("You are unable to make the minimum bet and must make room for another player.\nGoodbye.");
                 }
             }
-            else if (thePlayer.handvalue == 21)
+            else if (thePlayer.HardHandValue == 21)
             {
                 MessageBox.Show("Blackjack!");
                 PlayerBalance += (int)(playerbet * 2.5);
@@ -236,7 +208,7 @@ namespace Blackjack_CSC470
             //player chooses to stand. Start dealer functions
             while (!isgameover)
             {
-                theDealer.dealeraction(thePlayer.handvalue, playerbet);
+                theDealer.dealeraction(thePlayer.HardHandValue, playerbet);
                 Dealercards[Dealercardvisible].Visible = true;
                 Dealercards[Dealercardvisible].Image = theDealer.getdealerslastcard().CardFront();
                 Dealercardvisible++;
@@ -251,7 +223,7 @@ namespace Blackjack_CSC470
                 MessageBox.Show("The dealer has busted.\nPlayer wins.");
                 PlayerBalance += (playerbet * 2);
             }
-            else if (theDealer.handvalue == thePlayer.handvalue)
+            else if (theDealer.handvalue == thePlayer.HardHandValue)
             {
                 //print push/tie game
                 MessageBox.Show(string.Format("Push. You get your bet of ${0} back.", playerbet));
@@ -259,13 +231,13 @@ namespace Blackjack_CSC470
                 PlayerBalance += playerbet;
                 //exit
             }
-            else if (theDealer.handvalue > thePlayer.handvalue)
+            else if (theDealer.handvalue > thePlayer.HardHandValue)
             {
                 //print dealer wins
                 MessageBox.Show(string.Format("Dealer Wins! You lost ${0}", playerbet));
                 //exit
             }
-            else if (theDealer.handvalue < thePlayer.handvalue)
+            else if (theDealer.handvalue < thePlayer.HardHandValue)
             {//print player wins
                 MessageBox.Show(string.Format("Player Wins! You win ${0}!", playerbet));
                 //add bet to player balance
@@ -282,43 +254,10 @@ namespace Blackjack_CSC470
             Newgame.Enabled = true;
             _ = Newgame.Focus();
         }
-
-        private void betvalues_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //bet values
-        }
-
         private void Newgame_Click(object sender, EventArgs e)
         {
             theDeck.shuffledeck();
-            Playercard1.Image = Card.GetBackImage();
-            Playercard2.Image = Card.GetBackImage();
-            Playercard1.Visible = true;
-            Playercard2.Visible = true;
-            Playercard3.Visible = false;
-            Playercard4.Visible = false;
-            Playercard5.Visible = false;
-            Playercard6.Visible = false;
-            Playercard7.Visible = false;
-            Dealercard1.Image = Card.GetBackImage();
-            Dealercard2.Image = Card.GetBackImage();
-            Dealercard3.Visible = false;
-            Dealercard4.Visible = false;
-            Dealercard5.Visible = false;
-            Dealercard6.Visible = false;
-            Dealercard7.Visible = false;
-            thePlayer.resetplayer();
-            theDealer.resetdealer();
-            Playercardvisible = 0;
-            Dealercardvisible = 0;
-            isgameover = false;
-            Dealercards[Dealercardvisible].Visible = true;
-            Dealercards[Dealercardvisible].Image = theDealer.getonedealercard().CardFront();
-            Dealercardvisible++;
-            Playercards[Playercardvisible].Image = thePlayer.playerhit().CardFront();
-            Playercardvisible++;
-            Playercards[Playercardvisible].Image = thePlayer.playerhit().CardFront();
-            Playercardvisible++;
+            NewGameMethod();
             hashit = false;
             HitButton.Enabled = true;
             StandButton.Enabled = true;
@@ -327,6 +266,8 @@ namespace Blackjack_CSC470
             bets.Enabled = true;
             bets.SelectedIndex = 0;
             playerbet = 0;
+            theDealer.resetdealer();
+            thePlayer.resetplayer();
             HitButton.Enabled = true;
         }
 
@@ -346,17 +287,26 @@ namespace Blackjack_CSC470
                 }
                 finally
                 {
-                    saveData = new SaveData();
-                    saveData.userlist = users;
-                    saveData.playStarted = bets.SelectedIndex != 0;
-                    if (bets.SelectedIndex != 0)
+                    saveData = new SaveData
+                    {
+                        userlist = users,
+                        balance = PlayerBalance,
+                        LoggedInPlayer = LoggedInPlayer,
+                        playStarted = !Newgame.Enabled
+                    };
+                    if (!Newgame.Enabled)
                     {
                         saveData.theBet = bets.SelectedIndex;
-                        saveData.loggedInPlayer = LoggedInPlayer;
                         saveData.deck = theDeck;
                         saveData.dealer = theDealer;
-                        saveData.balance = PlayerBalance;
                         saveData.player = thePlayer;
+                        saveData.Playercardvisible = Playercardvisible;
+                        saveData.Dealercardvisible = Dealercardvisible;
+                        for (int counter = 0; counter < 7; counter++)
+                        {
+                            saveData.PlayerVisibleBools[counter] = Playercards[counter].Visible;
+                            saveData.DealerVisibleBools[counter] = Dealercards[counter].Visible;
+                        }
                     }
                     formatter.Serialize(writer, saveData);
                     writer.Close();
@@ -375,8 +325,38 @@ namespace Blackjack_CSC470
 
         private void userManagementToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UManage UserManagement = new UManage();
-            UserManagement.Show();
+            UManage UserManagement = new UManage(LoggedInPlayer, users);
+            UserManagement.ShowDialog(this);
+            if (UserManagement.DialogResult == DialogResult.OK)
+            {
+                LoggedInPlayer = UserManagement.LoggedInUser.guid;
+                PlayerBalance += UserManagement.AddAmount;
+            }
+            UserManagement.Dispose();
+        }
+        private void NewGameMethod()
+        {
+            //make unneeded cards invisible
+            for (int counter = 2; counter < 7; counter++ )
+            {
+                Playercards[counter].Visible = false;
+                Playercards[counter].Image = Card.GetBackImage();
+                Dealercards[counter].Visible = false;
+                Dealercards[counter].Image = Card.GetBackImage();
+            }
+            //display first two cards for dealer like in normal gameplay
+            for (int counter = 0; counter < 2; counter++)
+            {
+                Dealercards[counter].Visible = true;
+                Playercards[counter].Visible = true;
+                Playercards[counter].Image = thePlayer.playerhit().CardFront();
+            }
+            Dealercards[0].Image = theDealer.getonedealercard().CardFront();
+            _ = theDealer.getonedealercard();
+            Dealercard2.Image = Card.GetBackImage();
+            Dealercardvisible = 1;
+            Playercardvisible = 2;
+            Newgame.Enabled = false;
         }
     }
 }

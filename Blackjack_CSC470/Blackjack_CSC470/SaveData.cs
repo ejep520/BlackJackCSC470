@@ -11,7 +11,7 @@ namespace Blackjack_CSC470
         public Player player;
         public Dealer dealer;
         public List<User> userlist;
-        public Guid loggedInPlayer;
+        public Guid LoggedInPlayer;
         public int balance;
         public int theBet;
         public int Playercardvisible;

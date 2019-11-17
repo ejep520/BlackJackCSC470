@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Blackjack_CSC470
 {
+    [Serializable]
     public class Dealer
     {
         public int handvalue = 0;
@@ -40,7 +38,7 @@ namespace Blackjack_CSC470
         {
             //dealer draw from deck into dealer's hand
             Card drawncard = theDeck.drawcard();
-            //add card value to handvalue
+            //add card value to HardHandValue
             handvalue += drawncard.ValueOf;
             privHand.Add(drawncard);
             //assign card image to picturebox

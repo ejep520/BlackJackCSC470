@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Text;
-using System.Security.Cryptography;
 
 namespace Blackjack_CSC470
 {
+    [Serializable]
     public class User
     {
-        private string _fname, _lname, _addrZero, _addrOne, _city, _secrQues, _lastFour;
-        private int _zipCode;
+        private string _fname, _lname, _addrZero, _addrOne, _city, _secrQues, _uname;
+        private int _zipCode, _lastFour;
         private StateEnum _state;
         private byte[] _ccnHash, _ccvHash, _exprHash, _passHash, _secAnsHash;
         public string DisplayName
@@ -17,29 +16,43 @@ namespace Blackjack_CSC470
                 return string.Concat(_fname, " ", _lname);
             }
         }
-        private readonly SHA512 sHA = new SHA512Managed();
         public readonly Guid guid;
-        private readonly UnicodeEncoding ue = new UnicodeEncoding();
-        public User(string FName, string LName, string AddrZero, string AddrOne,
-            string City, string GetState, int ZipCode, string PassWd, string CredCardNo,
-            string CCV, string ExpDate, string SecrQues, string SecrAnsw)
+        public User(string UName, string FName, string LName, string AddrZero, string AddrOne,
+            string City, string GetState, int ZipCode, byte[] PassWd, byte[] CredCardNo,
+            byte[] CCV, byte[] ExpDate, string SecrQues, byte[] SecrAnsw, int lastFour)
         {
-            sHA.Initialize();
-            guid = new Guid();
+            guid = Guid.NewGuid();
+            _uname = UName;
             _fname = FName;
             _lname = LName;
             _addrZero = AddrZero;
             _addrOne = AddrOne;
             _city = City;
-            _state = (StateEnum)Enum.Parse(typeof(StateEnum), GetState.Replace(" ", "_"));
+            _state = (StateEnum)Enum.Parse(typeof(StateEnum), GetState.Replace(" ", "_").ToLower());
             _zipCode = ZipCode;
             _secrQues = SecrQues;
-            _lastFour = CredCardNo.Substring(CredCardNo.Length - 5);
-            _ccnHash = sHA.ComputeHash(ue.GetBytes(CredCardNo));
-            _ccvHash = sHA.ComputeHash(ue.GetBytes(CCV));
-            _exprHash = sHA.ComputeHash(ue.GetBytes(ExpDate));
-            _passHash = sHA.ComputeHash(ue.GetBytes(PassWd));
-            _secAnsHash = sHA.ComputeHash(ue.GetBytes(SecrAnsw));
+            _lastFour = lastFour;
+            _ccnHash = CredCardNo;
+            _ccvHash = CCV;
+            _exprHash = ExpDate;
+            _passHash = PassWd;
+            _secAnsHash = SecrAnsw;
+        }
+        public string UName
+        {
+            get => _uname;
+            set => _uname = value;
+        }
+        public string UserPass
+        {
+            get => "*****";
+        }
+        public void ChangePass(byte[] OldPass, byte[] NewPass)
+        {
+            if (_passHash == OldPass)
+                _passHash = NewPass;
+            else
+                throw new AccessViolationException("Password change attempt with invalid password!", (Exception)null);
         }
         public string FName
         {
@@ -155,17 +168,18 @@ namespace Blackjack_CSC470
         {
             get => string.Concat("*****", _lastFour);
         }
-        public bool PassWdMatch(string PassWd)
+        public bool PassWdMatch(byte[] PassWd)
         {
-            return _passHash == sHA.ComputeHash(ue.GetBytes(PassWd));
+            for (int counter = 0; counter < _passHash.Length; counter++)
+            {
+                if (_passHash[counter] != PassWd[counter])
+                    return false;
+            }
+            return true;
         }
         public override string ToString()
         {
             return guid.ToString();
-        }
-        ~User()
-        {
-            sHA.Clear();
         }
     }
 }

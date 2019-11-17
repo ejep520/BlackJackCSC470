@@ -18,13 +18,13 @@ namespace Blackjack_CSC470.Tests
             Deck deck = new Deck();
             Player player = new Player(deck)
             {
-                handvalue = 22
+                HardHandValue = 22
             };
             if (!player.isplayerbusted())
             {
                 Assert.Fail();
             }
-            player.handvalue = 20;
+            player.HardHandValue = 20;
             if (player.isplayerbusted())
             {
                 Assert.Fail();

@@ -6,8 +6,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Blackjack_CSC470
@@ -15,9 +15,26 @@ namespace Blackjack_CSC470
     public partial class UManage : Form
     {
         private bool PrevCCImageState;
-        public UManage()
+        public List<User> users;
+        public User LoggedInUser;
+        public int AddAmount;
+        private int UserIndexNo = -1;
+        private readonly SHA512 sHA = new SHA512Managed();
+        private readonly UnicodeEncoding ue = new UnicodeEncoding();
+        public UManage(Guid currentUser, List<User> GetUsers)
         {
             InitializeComponent();
+            users = GetUsers;
+            CCErrorProvider.Clear();
+            UserLoginErrorProv.Clear();
+            UserMaintErrorProv.Clear();
+            if (currentUser == Guid.Empty)
+            { }
+            else
+            {
+                UserIndexNo = users.FindIndex(a => a.guid == currentUser);
+                LoggedInUser = users[UserIndexNo];
+            }
         }
         private void Form2_Load(object sender, EventArgs e)
         {
@@ -25,24 +42,49 @@ namespace Blackjack_CSC470
             CCImage.Visible = false;
             CenterToScreen();
             Enabled = true;
+            if (LoggedInUser != null)
+                UNameEnterbox.Text = LoggedInUser.UName;
         }
         private void LoginButton_Click(object sender, EventArgs e)
         {
             //log in button
             /*
             * relative text box names
-            * Username text box: Usernamebox
+            * Username text box: UserNameEnterBox
             * Password text box: Passwordbox
-            * Start amount text box: Startamountbox
+            * Start amount text box: StartAmountBox
             */
             //get username
-            string loginname = Usernamebox.Text;
-            //get password
-            string loginpassword = Passwordbox.Text;
+            string loginname = UNameEnterbox.Text;
             //get starting amount
-            int startingamount = Int32.Parse(Startamountbox.Text);
+            if ((LoggedInUser == null) && users.Where(a => a.UName == UNameEnterbox.Text).Any())
+            {
+                switch (users.Where(a => a.UName == UNameEnterbox.Text).Count())
+                {
+                    case 1:
+                        {
+                            User MaybeUser = users.Where(a => a.UName == UNameEnterbox.Text).Single();
+                            byte[] MaybePass = sHA.ComputeHash(ue.GetBytes(Passwordbox.Text));
+                            if (MaybeUser.PassWdMatch(MaybePass))
+                            {
+                                LoggedInUser = users.Where(a => a.UName == UNameEnterbox.Text).Single();
+                                UserIndexNo = users.FindIndex(a => a.guid == LoggedInUser.guid);
+                                AddAmount = 0;
+                                _ = int.TryParse(Startamountbox.Text, out AddAmount);
+                                DialogResult = DialogResult.OK;
+                                Close();
+                            }
+                            else
+                            {
+                                UserMaintErrorProv.SetError(Passwordbox, "Invalid password!");
+                            }
+                            break;
+                        }
+                    default:
+                        { throw new Exception("We found two users with the same user name!"); }
+                }
+            }
         }
-
         private void NewUserButton_Click(object sender, EventArgs e)
         {
             //create new user button
@@ -57,36 +99,36 @@ namespace Blackjack_CSC470
              * Security question text box: Questionbox
              * Security question answer text box: Questionanswerbox
              */
-            bool isValid = true;
-            string Username = Createusernamebox.Text;
-            string Password = string.Empty;
-            string Firstname = string.Empty;
-            string Lastname = Lastnamebox.Text;
-            string Address = Address1box.Text;
-            string Address2 = Address2box.Text;
-            string City = Citybox.Text;
-            string State = Statebox.Text;
-            int zipcode = int.Parse(Zipbox.Text);
-            string phonenumber = Phonenumberbox.Text;
-            string Creditcard = Creditcardbox.Text;
-            string CCV = CCVbox.Text;
-            string expdate = Expdatebox.Text;
-            string Securityquestion = Questionbox.Text;
-            string Securityquestionanswer = Questionanswerbox.Text;
-
-            if (isValid)
-            {
-                User User1 = new User(Firstname, Lastname, Address, Address2, City, State,
-                                        zipcode, Password, Creditcard, CCV, expdate,
-                                        Securityquestion, Securityquestionanswer);
-                //write to user data file 
-            }
+            UserLoginErrorProv.Clear();
+            User User1 = new User(CreateUserNameBox.Text, Firstnamebox.Text, Lastnamebox.Text, Address1box.Text,
+                                  Address2box.Text, Citybox.Text, Statebox.Text, int.Parse(Zipbox.Text),
+                                  sHA.ComputeHash(ue.GetBytes(CreatePasswordBox.Text)), sHA.ComputeHash(ue.GetBytes(Creditcardbox.Text)), sHA.ComputeHash(ue.GetBytes(CCVbox.Text)), sHA.ComputeHash(ue.GetBytes(Expdatebox.Text)),
+                                  Questionbox.Text, sHA.ComputeHash(ue.GetBytes(Questionanswerbox.Text)), int.Parse(Creditcardbox.Text.Substring(Creditcardbox.Text.Length - 4)));
+            if (!users.Where(a => a.UName == User1.UName).Any())
+                users.Add(User1);
+            else
+                UserMaintErrorProv.SetError(CreateUserNameBox, "This user already exists.");
         }
         private void ChangePassWdButton_Click(object sender, EventArgs e)
         {
-            //change password button
+            UserMaintErrorProv.Clear();
+            CCErrorProvider.Clear();
+            if (string.IsNullOrEmpty(Passwordbox.Text))
+            { UserMaintErrorProv.SetError(Passwordbox, "You must first enter your old password."); }
+            else if (!LoggedInUser.PassWdMatch(sHA.ComputeHash(ue.GetBytes(Passwordbox.Text))))
+            { UserMaintErrorProv.SetError(Passwordbox, "Your old password does not match!"); }
+            else if (string.IsNullOrEmpty(CreatePasswordBox.Text))
+            { UserMaintErrorProv.SetError(CreatePasswordBox, "You must enter a new password!"); }
+            else
+            {
+                LoggedInUser.ChangePass(sHA.ComputeHash(ue.GetBytes(Passwordbox.Text)), sHA.ComputeHash(ue.GetBytes(CreatePasswordBox.Text)));
+                UserMaintErrorProv.Clear();
+                users.RemoveAt(UserIndexNo);
+                users.Add(LoggedInUser);
+                UserIndexNo = users.FindIndex(a => a.guid == LoggedInUser.guid);
+                MessageBox.Show("Your password has been successfully changed!", "Password changed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
-
         private void ForgotPassWdButton_Click(object sender, EventArgs e)
         {
             //forgot password button
@@ -165,11 +207,15 @@ namespace Blackjack_CSC470
                             CCImage.Visible = false;
                             break;
                     }
+                    NewUserButton.Enabled = true;
+                    EditUserDataButton.Enabled = true;
                 }
             }
             else
             { 
                 CCErrorProvider.SetError(Creditcardbox, "Invalid credit card number.");
+                NewUserButton.Enabled = false;
+                EditUserDataButton.Enabled = false;
                 CCImage.Visible = false;
             }
         }
@@ -180,6 +226,15 @@ namespace Blackjack_CSC470
         }
 
         private void Edituserdata_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void Startamountbox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Zipbox_TextChanged(object sender, EventArgs e)
         {
 
         }
