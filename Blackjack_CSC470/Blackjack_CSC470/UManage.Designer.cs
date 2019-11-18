@@ -62,7 +62,6 @@
             this.AddrOneLabel = new System.Windows.Forms.Label();
             this.Address2box = new System.Windows.Forms.TextBox();
             this.Citybox = new System.Windows.Forms.TextBox();
-            this.Statebox = new System.Windows.Forms.TextBox();
             this.Zipbox = new System.Windows.Forms.TextBox();
             this.CCVLabel = new System.Windows.Forms.Label();
             this.ExprLabel = new System.Windows.Forms.Label();
@@ -76,6 +75,7 @@
             this.Phonenumberbox = new System.Windows.Forms.MaskedTextBox();
             this.UserLoginErrorProv = new System.Windows.Forms.ErrorProvider(this.components);
             this.UserMaintErrorProv = new System.Windows.Forms.ErrorProvider(this.components);
+            this.StateBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.CCVImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CCImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CCErrorProvider)).BeginInit();
@@ -142,7 +142,6 @@
             this.Startamountbox.Name = "Startamountbox";
             this.Startamountbox.Size = new System.Drawing.Size(102, 20);
             this.Startamountbox.TabIndex = 5;
-            this.Startamountbox.TextChanged += new System.EventHandler(this.Startamountbox_TextChanged);
             // 
             // LogInButton
             // 
@@ -422,15 +421,6 @@
             this.Citybox.Size = new System.Drawing.Size(195, 20);
             this.Citybox.TabIndex = 22;
             // 
-            // Statebox
-            // 
-            this.Statebox.Location = new System.Drawing.Point(397, 183);
-            this.Statebox.Margin = new System.Windows.Forms.Padding(2);
-            this.Statebox.MaxLength = 32;
-            this.Statebox.Name = "Statebox";
-            this.Statebox.Size = new System.Drawing.Size(195, 20);
-            this.Statebox.TabIndex = 24;
-            // 
             // Zipbox
             // 
             this.Zipbox.Location = new System.Drawing.Point(397, 207);
@@ -439,7 +429,6 @@
             this.Zipbox.Name = "Zipbox";
             this.Zipbox.Size = new System.Drawing.Size(195, 20);
             this.Zipbox.TabIndex = 26;
-            this.Zipbox.TextChanged += new System.EventHandler(this.Zipbox_TextChanged);
             // 
             // CCVLabel
             // 
@@ -545,6 +534,14 @@
             // 
             this.UserMaintErrorProv.ContainerControl = this;
             // 
+            // StateBox
+            // 
+            this.StateBox.FormattingEnabled = true;
+            this.StateBox.Location = new System.Drawing.Point(397, 181);
+            this.StateBox.Name = "StateBox";
+            this.StateBox.Size = new System.Drawing.Size(192, 21);
+            this.StateBox.TabIndex = 42;
+            // 
             // UManage
             // 
             this.AccessibleName = "Forgotpasswordbutton";
@@ -552,6 +549,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSlateGray;
             this.ClientSize = new System.Drawing.Size(620, 423);
+            this.Controls.Add(this.StateBox);
             this.Controls.Add(this.Phonenumberbox);
             this.Controls.Add(this.Creditcardbox);
             this.Controls.Add(this.EditUserDataButton);
@@ -562,7 +560,6 @@
             this.Controls.Add(this.ExprLabel);
             this.Controls.Add(this.CCVLabel);
             this.Controls.Add(this.Zipbox);
-            this.Controls.Add(this.Statebox);
             this.Controls.Add(this.Citybox);
             this.Controls.Add(this.Address2box);
             this.Controls.Add(this.AddrOneLabel);
@@ -600,7 +597,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "User Management";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UManage_FormClosing);
-            this.Load += new System.EventHandler(this.Form2_Load);
+            this.Load += new System.EventHandler(this.UManage_Load);
             ((System.ComponentModel.ISupportInitialize)(this.CCVImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CCImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CCErrorProvider)).EndInit();
@@ -645,7 +642,6 @@
         private System.Windows.Forms.Label AddrOneLabel;
         private System.Windows.Forms.TextBox Address2box;
         private System.Windows.Forms.TextBox Citybox;
-        private System.Windows.Forms.TextBox Statebox;
         private System.Windows.Forms.TextBox Zipbox;
         private System.Windows.Forms.Label CCVLabel;
         private System.Windows.Forms.Label ExprLabel;
@@ -659,5 +655,6 @@
         private System.Windows.Forms.TextBox Creditcardbox;
         private System.Windows.Forms.ErrorProvider UserLoginErrorProv;
         private System.Windows.Forms.ErrorProvider UserMaintErrorProv;
+        private System.Windows.Forms.ComboBox StateBox;
     }
 }

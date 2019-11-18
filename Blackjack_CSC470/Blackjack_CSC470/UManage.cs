@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Blackjack_CSC470
@@ -21,9 +23,21 @@ namespace Blackjack_CSC470
         private int UserIndexNo = -1;
         private readonly SHA512 sHA = new SHA512Managed();
         private readonly UnicodeEncoding ue = new UnicodeEncoding();
+        private const string InvalPass = "Invalid password!";
+        private const string NoSuchUsr = "There is no such user!";
+        private const string UsrExists = "That user already exists!";
+        private const string EditUser = "Edit User";
+        private const string SaveUser = "Save User";
+        private const string CreteUser = "Create User";
+        private const string Cancel = "Cancel";
+        private const string UsrEmpty = "Please enter a user name!";
+        private const string FourStars = "****";
         public UManage(Guid currentUser, List<User> GetUsers)
         {
             InitializeComponent();
+            CultureInfo culture = Thread.CurrentThread.CurrentCulture;
+            TextInfo textInfo = culture.TextInfo;
+            List<string> stateList = new List<string>();
             users = GetUsers;
             CCErrorProvider.Clear();
             UserLoginErrorProv.Clear();
@@ -35,8 +49,14 @@ namespace Blackjack_CSC470
                 UserIndexNo = users.FindIndex(a => a.guid == currentUser);
                 LoggedInUser = users[UserIndexNo];
             }
+            stateList.Add(string.Empty);
+            stateList.AddRange(Enum.GetNames(typeof(User.StateEnum)));
+            for (int counter = 0; counter < stateList.Count(); counter++)
+            { stateList[counter] = textInfo.ToTitleCase(stateList[counter].Replace("_", " ")); }
+            StateBox.Items.AddRange(stateList.ToArray());
+            StateBox.SelectedIndex = 0;
         }
-        private void Form2_Load(object sender, EventArgs e)
+        private void UManage_Load(object sender, EventArgs e)
         {
             CCVImage.Visible = false;
             CCImage.Visible = false;
@@ -76,12 +96,12 @@ namespace Blackjack_CSC470
                             }
                             else
                             {
-                                UserMaintErrorProv.SetError(Passwordbox, "Invalid password!");
+                                UserMaintErrorProv.SetError(Passwordbox, InvalPass);
                             }
                             break;
                         }
                     default:
-                        { throw new Exception("We found two users with the same user name!"); }
+                        { throw new Exception("We found two (or more) users with the same user name!"); }
                 }
             }
         }
@@ -101,13 +121,34 @@ namespace Blackjack_CSC470
              */
             UserLoginErrorProv.Clear();
             User User1 = new User(CreateUserNameBox.Text, Firstnamebox.Text, Lastnamebox.Text, Address1box.Text,
-                                  Address2box.Text, Citybox.Text, Statebox.Text, int.Parse(Zipbox.Text),
-                                  sHA.ComputeHash(ue.GetBytes(CreatePasswordBox.Text)), sHA.ComputeHash(ue.GetBytes(Creditcardbox.Text)), sHA.ComputeHash(ue.GetBytes(CCVbox.Text)), sHA.ComputeHash(ue.GetBytes(Expdatebox.Text)),
+                                  Address2box.Text, Citybox.Text, StateBox.SelectedItem.ToString(), int.Parse(Zipbox.Text),
+                                  long.Parse(Phonenumberbox.Text), sHA.ComputeHash(ue.GetBytes(CreatePasswordBox.Text)), sHA.ComputeHash(ue.GetBytes(Creditcardbox.Text)), sHA.ComputeHash(ue.GetBytes(CCVbox.Text)), sHA.ComputeHash(ue.GetBytes(Expdatebox.Text)),
                                   Questionbox.Text, sHA.ComputeHash(ue.GetBytes(Questionanswerbox.Text)), int.Parse(Creditcardbox.Text.Substring(Creditcardbox.Text.Length - 4)));
             if (!users.Where(a => a.UName == User1.UName).Any())
+            {
                 users.Add(User1);
+                MessageBox.Show(string.Format("User {0} has been created!", User1.UName), "User created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                UNameEnterbox.Text = CreateUserNameBox.Text;
+                CreateUserNameBox.Text = string.Empty;
+                Firstnamebox.Text = string.Empty;
+                Lastnamebox.Text = string.Empty;
+                Address1box.Text = string.Empty;
+                Address2box.Text = string.Empty;
+                Citybox.Text = string.Empty;
+                StateBox.Text = string.Empty;
+                Zipbox.Text = string.Empty;
+                CreatePasswordBox.Text = string.Empty;
+                Creditcardbox.Text = string.Empty;
+                CCImage.Visible = false;
+                CCImage.Image = null;
+                CCVbox.Text = string.Empty;
+                Expdatebox.Text = string.Empty;
+                Questionbox.Text = string.Empty;
+                Questionanswerbox.Text = string.Empty;
+                _ = UNameEnterbox.Focus();
+            }
             else
-                UserMaintErrorProv.SetError(CreateUserNameBox, "This user already exists.");
+                UserMaintErrorProv.SetError(CreateUserNameBox, UsrExists);
         }
         private void ChangePassWdButton_Click(object sender, EventArgs e)
         {
@@ -116,7 +157,7 @@ namespace Blackjack_CSC470
             if (string.IsNullOrEmpty(Passwordbox.Text))
             { UserMaintErrorProv.SetError(Passwordbox, "You must first enter your old password."); }
             else if (!LoggedInUser.PassWdMatch(sHA.ComputeHash(ue.GetBytes(Passwordbox.Text))))
-            { UserMaintErrorProv.SetError(Passwordbox, "Your old password does not match!"); }
+            { UserMaintErrorProv.SetError(Passwordbox, InvalPass); }
             else if (string.IsNullOrEmpty(CreatePasswordBox.Text))
             { UserMaintErrorProv.SetError(CreatePasswordBox, "You must enter a new password!"); }
             else
@@ -222,21 +263,46 @@ namespace Blackjack_CSC470
 
         private void UManage_FormClosing(object sender, FormClosingEventArgs e)
         {
+            sHA.Dispose();
             Dispose();
         }
 
         private void Edituserdata_Click(object sender, EventArgs e)
         {
-        }
-
-        private void Startamountbox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Zipbox_TextChanged(object sender, EventArgs e)
-        {
-
+            if (EditUserDataButton.Text == EditUser)
+            {
+                if (string.IsNullOrEmpty(UNameEnterbox.Text))
+                {
+                    UserMaintErrorProv.SetError(UNameEnterbox, UsrEmpty);
+                }
+                else if (LoggedInUser.UName != UNameEnterbox.Text)
+                {
+                    UserMaintErrorProv.SetError(UNameEnterbox, NoSuchUsr);
+                }
+                else if (!LoggedInUser.PassWdMatch(sHA.ComputeHash(ue.GetBytes(Passwordbox.Text))))
+                {
+                    UserMaintErrorProv.SetError(UNameEnterbox, InvalPass);
+                }
+                else if (string.IsNullOrEmpty(CreateUserNameBox.Text) && string.IsNullOrEmpty(Firstnamebox.Text) && string.IsNullOrEmpty(Lastnamebox.Text) && string.IsNullOrEmpty(Address1box.Text) && string.IsNullOrEmpty(Address2box.Text) && string.IsNullOrEmpty(Citybox.Text) && string.IsNullOrEmpty(StateBox.Text) && string.IsNullOrEmpty(Zipbox.Text) && string.IsNullOrEmpty(Phonenumberbox.Text) && string.IsNullOrEmpty(Creditcardbox.Text) && string.IsNullOrEmpty(CCVbox.Text) && string.IsNullOrEmpty(Expdatebox.Text) && string.IsNullOrEmpty(Questionbox.Text) && string.IsNullOrEmpty(Questionanswerbox.Text))
+                {
+                    CreateUserNameBox.Text = LoggedInUser.UName;
+                    CreatePasswordBox.Enabled = false;
+                    Firstnamebox.Text = LoggedInUser.FName;
+                    Lastnamebox.Text = LoggedInUser.LName;
+                    Address1box.Text = LoggedInUser.AddrZero;
+                    Address2box.Text = LoggedInUser.AddrOne;
+                    Citybox.Text = LoggedInUser.City;
+                    StateBox.Text = LoggedInUser.State;
+                    Zipbox.Text = LoggedInUser.ZipCode;
+                    Phonenumberbox.Text = LoggedInUser.PhoneNo.ToString();
+                    Creditcardbox.Text = string.Concat(FourStars, LoggedInUser.LastFour);
+                    CCVbox.Text = FourStars;
+                    Expdatebox.Text = "0000";
+                    Questionbox.Text = LoggedInUser.SecretQ;
+                    Questionanswerbox.Text = FourStars;
+                }
+            }
+            else if 
         }
     }
 }

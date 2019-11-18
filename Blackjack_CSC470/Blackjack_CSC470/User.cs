@@ -5,79 +5,47 @@ namespace Blackjack_CSC470
     [Serializable]
     public class User
     {
-        private string _fname, _lname, _addrZero, _addrOne, _city, _secrQues, _uname;
+        public string UName, FName, LName, AddrZero, AddrOne, City, SecretQ;
         private int _zipCode, _lastFour;
+        private long _PhoneNo;
         private StateEnum _state;
         private byte[] _ccnHash, _ccvHash, _exprHash, _passHash, _secAnsHash;
         public string DisplayName
         {
             get
             {
-                return string.Concat(_fname, " ", _lname);
+                return string.Concat(FName, " ", LName);
             }
         }
         public readonly Guid guid;
         public User(string UName, string FName, string LName, string AddrZero, string AddrOne,
-            string City, string GetState, int ZipCode, byte[] PassWd, byte[] CredCardNo,
+            string City, string GetState, int ZipCode, long GetPhoneNo, byte[] PassWd, byte[] CredCardNo,
             byte[] CCV, byte[] ExpDate, string SecrQues, byte[] SecrAnsw, int lastFour)
         {
             guid = Guid.NewGuid();
-            _uname = UName;
-            _fname = FName;
-            _lname = LName;
-            _addrZero = AddrZero;
-            _addrOne = AddrOne;
-            _city = City;
+            this.UName = UName;
+            _passHash = PassWd;
+            this.FName = FName;
+            this.LName = LName;
+            this.AddrZero = AddrZero;
+            this.AddrOne = AddrOne;
+            this.City = City;
             _state = (StateEnum)Enum.Parse(typeof(StateEnum), GetState.Replace(" ", "_").ToLower());
+            PhoneNo = GetPhoneNo;
             _zipCode = ZipCode;
-            _secrQues = SecrQues;
             _lastFour = lastFour;
             _ccnHash = CredCardNo;
             _ccvHash = CCV;
             _exprHash = ExpDate;
-            _passHash = PassWd;
+            SecretQ = SecrQues;
             _secAnsHash = SecrAnsw;
-        }
-        public string UName
-        {
-            get => _uname;
-            set => _uname = value;
-        }
-        public string UserPass
-        {
-            get => "*****";
         }
         public void ChangePass(byte[] OldPass, byte[] NewPass)
         {
-            if (_passHash == OldPass)
+            if (PassWdMatch(OldPass))
                 _passHash = NewPass;
             else
                 throw new AccessViolationException("Password change attempt with invalid password!", (Exception)null);
-        }
-        public string FName
-        {
-            get => _fname;
-            set => _fname = value;
-        }
-        public string LName
-        {
-            get => _lname;
-            set => _lname = value;
-        }
-        public string AddrZero
-        {
-            get => _addrZero;
-            set => _addrZero = value;
-        }
-        public string AddrOne
-        {
-            get => _addrOne;
-            set => _addrOne = value;
-        }
-        public string City
-        {
-            get => _city;
-            set => _city = value;
         }
         public string State
         {
@@ -101,6 +69,17 @@ namespace Blackjack_CSC470
                 {
                     throw new ArgumentOutOfRangeException("Invalid zip code passed.", (Exception)null);
                 }
+            }
+        }
+        public long PhoneNo
+        {
+            get => _PhoneNo;
+            set
+            {
+                if ((value < 1110000000) || (value > 9999999999))
+                    throw new ArgumentOutOfRangeException("This is not a valid phone number.", (Exception)null);
+                else
+                    _PhoneNo = value;
             }
         }
         public enum StateEnum
@@ -166,10 +145,12 @@ namespace Blackjack_CSC470
         }
         public string LastFour
         {
-            get => string.Concat("*****", _lastFour);
+            get => _lastFour.ToString();
         }
         public bool PassWdMatch(byte[] PassWd)
         {
+            if (_passHash.Length != PassWd.Length)
+                return false;
             for (int counter = 0; counter < _passHash.Length; counter++)
             {
                 if (_passHash[counter] != PassWd[counter])
@@ -177,9 +158,20 @@ namespace Blackjack_CSC470
             }
             return true;
         }
+        public bool SecretAnsMatch(byte[] SecretAns)
+        {
+            if (SecretAns.Length != _secAnsHash.Length)
+                return false;
+            for (int counter = 0; counter < _secAnsHash.Length; counter++)
+            {
+                if (_secAnsHash[counter] != SecretAns[counter])
+                    return false;
+            }
+            return true;
+        }
         public override string ToString()
         {
-            return guid.ToString();
+            return DisplayName;
         }
     }
 }
