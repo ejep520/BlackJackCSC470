@@ -273,6 +273,7 @@ namespace Blackjack_CSC470
 
         private void Form1_Closing(object sender, EventArgs e)
         {
+            
             if (saveTheData)
             {
                 FileStream writer = null;

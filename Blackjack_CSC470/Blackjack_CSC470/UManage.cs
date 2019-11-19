@@ -70,7 +70,7 @@ namespace Blackjack_CSC470
             //log in button
             /*
             * relative text box names
-            * Username text box: UserNameEnterBox
+            * Username text box: UNameEnterBox
             * Password text box: Passwordbox
             * Start amount text box: StartAmountBox
             */
@@ -120,10 +120,26 @@ namespace Blackjack_CSC470
              * Security question answer text box: Questionanswerbox
              */
             UserLoginErrorProv.Clear();
-            User User1 = new User(CreateUserNameBox.Text, Firstnamebox.Text, Lastnamebox.Text, Address1box.Text,
-                                  Address2box.Text, Citybox.Text, StateBox.SelectedItem.ToString(), int.Parse(Zipbox.Text),
-                                  long.Parse(Phonenumberbox.Text), sHA.ComputeHash(ue.GetBytes(CreatePasswordBox.Text)), sHA.ComputeHash(ue.GetBytes(Creditcardbox.Text)), sHA.ComputeHash(ue.GetBytes(CCVbox.Text)), sHA.ComputeHash(ue.GetBytes(Expdatebox.Text)),
-                                  Questionbox.Text, sHA.ComputeHash(ue.GetBytes(Questionanswerbox.Text)), int.Parse(Creditcardbox.Text.Substring(Creditcardbox.Text.Length - 4)));
+            string NewUsrName = CreateUserNameBox.Text;
+            string NewFName = Firstnamebox.Text;
+            string NewLName = Lastnamebox.Text;
+            string NewAddr0 = Address1box.Text;
+            string NewAddr1 = Address2box.Text;
+            string NewCity = Citybox.Text;
+            string NewState = StateBox.SelectedItem.ToString();
+            int NewZip = int.Parse(Zipbox.Text);
+            long NewPhone = long.Parse(Phonenumberbox.Text);
+            byte[] NewPass = sHA.ComputeHash(ue.GetBytes(CreatePasswordBox.Text));
+            byte[] NewCCd = sHA.ComputeHash(ue.GetBytes(Creditcardbox.Text));
+            byte[] NewCCV = sHA.ComputeHash(ue.GetBytes(CCVbox.Text));
+            byte[] NewExpr = sHA.ComputeHash(ue.GetBytes(Expdatebox.Text));
+            string NewQuest = Questionbox.Text;
+            byte[] NewAnswr = sHA.ComputeHash(ue.GetBytes(Questionanswerbox.Text));
+            int NewFour = int.Parse(Creditcardbox.Text.Substring(Creditcardbox.Text.Length - 4));
+            User User1 = new User(NewUsrName, NewFName, NewLName, NewAddr0,
+                                  NewAddr1, NewCity, NewState, NewZip,
+                                  NewPhone, NewPass, NewCCd, NewCCV, NewExpr,
+                                  NewQuest, NewAnswr, NewFour);
             if (!users.Where(a => a.UName == User1.UName).Any())
             {
                 users.Add(User1);
@@ -173,6 +189,34 @@ namespace Blackjack_CSC470
         private void ForgotPassWdButton_Click(object sender, EventArgs e)
         {
             //forgot password button
+            string username;
+            if (string.IsNullOrEmpty(UNameEnterbox.Text))
+                UserMaintErrorProv.SetError(UNameEnterbox, "You must enter your username.");
+            else
+                username = UNameEnterbox.Text;
+            //Get user's security question and put it in the security question box
+            if (users.Where(a => a.UName == UNameEnterbox.Text).Any())
+            {
+                User MaybeUser = users.Where(a => a.UName == UNameEnterbox.Text).Single();
+                Questionbox.Text = MaybeUser.SecretQ;
+            }
+            else
+                UserMaintErrorProv.SetError(UNameEnterbox, "You must enter a valid username.");
+            //require input into question answer box
+            string answer;
+            if (string.IsNullOrEmpty(Questionanswerbox.Text))
+                UserMaintErrorProv.SetError(Questionanswerbox, "You must enter an answer.");
+            else
+                answer = Questionanswerbox.Text;
+            //check answer against stored data
+            //take in password from data edit field
+            string newpasswd;
+            if (string.IsNullOrEmpty(CreatePasswordBox.Text))
+                UserMaintErrorProv.SetError(CreatePasswordBox, "You must enter a new password.");
+            else
+                newpasswd = CreatePasswordBox.Text;
+            //set new password
+
         }
 
         private void CCVbox_Enter(object sender, EventArgs e)
@@ -189,7 +233,7 @@ namespace Blackjack_CSC470
         }
         internal static bool CheckLuhn(string cardNo)
         {
-            // Credit to https://www.geeksforgeeks.org/luhn-algorithm/ for
+            // Credit to https://www.geeksforgeeks.org/luhn-algorithm/
             // for this implementation of the Luhn algorithm.
             int nDigits = cardNo.Length;
             int nSum = 0;
@@ -300,9 +344,31 @@ namespace Blackjack_CSC470
                     Expdatebox.Text = "0000";
                     Questionbox.Text = LoggedInUser.SecretQ;
                     Questionanswerbox.Text = FourStars;
+                    NewUserButton.Text = SaveUser;
+                    EditUserDataButton.Text = Cancel;
                 }
             }
-            else if 
+            else if (NewUserButton.Text == SaveUser)
+            {
+                CreateUserNameBox.Text = LoggedInUser.UName;
+                CreatePasswordBox.Enabled = false;
+                Firstnamebox.Text = LoggedInUser.FName;
+                Lastnamebox.Text = LoggedInUser.LName;
+                Address1box.Text = LoggedInUser.AddrZero;
+                Address2box.Text = LoggedInUser.AddrOne;
+                Citybox.Text = LoggedInUser.City;
+                StateBox.Text = LoggedInUser.State;
+                Zipbox.Text = LoggedInUser.ZipCode;
+                Phonenumberbox.Text = LoggedInUser.PhoneNo.ToString();
+                Creditcardbox.Text = string.Concat(FourStars, LoggedInUser.LastFour);
+                CCVbox.Text = FourStars;
+                Expdatebox.Text = "0000";
+                Questionbox.Text = LoggedInUser.SecretQ;
+                Questionanswerbox.Text = FourStars;
+                NewUserButton.Text = SaveUser;
+                EditUserDataButton.Text = Cancel;
+
+            }
         }
     }
 }
