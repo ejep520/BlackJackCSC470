@@ -6,7 +6,8 @@ namespace Blackjack_CSC470
     public class User
     {
         public string UName, FName, LName, AddrZero, AddrOne, City, SecretQ;
-        private int _zipCode, _lastFour;
+        public int LastFour;
+        private int _zipCode;
         private long _PhoneNo;
         private StateEnum _state;
         private byte[] _ccnHash, _ccvHash, _exprHash, _passHash, _secAnsHash;
@@ -33,7 +34,7 @@ namespace Blackjack_CSC470
             _state = (StateEnum)Enum.Parse(typeof(StateEnum), GetState.Replace(" ", "_").ToLower());
             PhoneNo = GetPhoneNo;
             _zipCode = ZipCode;
-            _lastFour = lastFour;
+            LastFour = lastFour;
             _ccnHash = CredCardNo;
             _ccvHash = CCV;
             _exprHash = ExpDate;
@@ -143,10 +144,6 @@ namespace Blackjack_CSC470
             puerto_rico,
             us_virgin_islands
         }
-        public string LastFour
-        {
-            get => _lastFour.ToString();
-        }
         public bool PassWdMatch(byte[] PassWd)
         {
             if (_passHash.Length != PassWd.Length)
@@ -172,6 +169,18 @@ namespace Blackjack_CSC470
         public override string ToString()
         {
             return DisplayName;
+        }
+        public void NewCC (byte[] newCard, int LFour, byte[] NewCCV, byte[] NewExpr)
+        {
+            _ccnHash = newCard;
+            LastFour = LFour;
+            _ccvHash = NewCCV;
+            _exprHash = NewExpr;
+        }
+        public void NewSecQ (string NewQuest, byte[] NewAnsw)
+        {
+            SecretQ = NewQuest;
+            _secAnsHash = NewAnsw;
         }
     }
 }

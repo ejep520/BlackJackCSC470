@@ -139,6 +139,7 @@ namespace Blackjack_CSC470
             }
             else
             { NewGameMethod(); }
+            GetLoggedinUser();
             PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
         }
 
@@ -332,6 +333,7 @@ namespace Blackjack_CSC470
             {
                 LoggedInPlayer = UserManagement.LoggedInUser.guid;
                 PlayerBalance += UserManagement.AddAmount;
+                GetLoggedinUser();
             }
             UserManagement.Dispose();
         }
@@ -358,6 +360,45 @@ namespace Blackjack_CSC470
             Dealercardvisible = 1;
             Playercardvisible = 2;
             Newgame.Enabled = false;
+        }
+        private void GetLoggedinUser()
+        {
+            if (LoggedInPlayer == Guid.Empty)
+            {
+                LoggedInPlayerLabel.Text = "No one is currently logged in.";
+                return;
+            }
+            else
+            {
+                if (users.Where(a => a.guid == LoggedInPlayer).Any())
+                {
+                    switch (users.Where(a => a.guid == LoggedInPlayer).Count())
+                    {
+                        case 1:
+                            {
+                                LoggedInPlayerLabel.Text = users.Where(a => a.guid == LoggedInPlayer).Single().DisplayName;
+                                break;
+                            }
+                        default:
+                            {
+                                LoggedInPlayerLabel.Text = "There was an error determining who is logged in.";
+                                break;
+                            }
+                    }
+                }
+                else
+                { LoggedInPlayerLabel.Text = "An unknown user is logged in."; }
+            }
+            return;
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                "This game has been created by\nJustin Gyolai\nErik Jepsen\nDanial Madson\nEthan Masching\nfor the Software Engineering class at Dakota State University.",
+                "About",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
     }
 }

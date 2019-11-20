@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
@@ -26,9 +25,9 @@ namespace Blackjack_CSC470
         private const string InvalPass = "Invalid password!";
         private const string NoSuchUsr = "There is no such user!";
         private const string UsrExists = "That user already exists!";
-        private const string EditUser = "Edit User";
+        private string EditUser;
         private const string SaveUser = "Save User";
-        private const string CreteUser = "Create User";
+        private const string CreateUser = "Create User";
         private const string Cancel = "Cancel";
         private const string UsrEmpty = "Please enter a user name!";
         private const string FourStars = "****";
@@ -42,6 +41,7 @@ namespace Blackjack_CSC470
             CCErrorProvider.Clear();
             UserLoginErrorProv.Clear();
             UserMaintErrorProv.Clear();
+            EditUser = EditUserDataButton.Text;
             if (currentUser == Guid.Empty)
             { }
             else
@@ -63,7 +63,11 @@ namespace Blackjack_CSC470
             CenterToScreen();
             Enabled = true;
             if (LoggedInUser != null)
+            {
                 UNameEnterbox.Text = LoggedInUser.UName;
+                EditUserDataButton.Visible = true;
+                EditUserDataButton.Enabled = true;
+            }
         }
         private void LoginButton_Click(object sender, EventArgs e)
         {
@@ -77,7 +81,7 @@ namespace Blackjack_CSC470
             //get username
             string loginname = UNameEnterbox.Text;
             //get starting amount
-            if ((LoggedInUser == null) && users.Where(a => a.UName == UNameEnterbox.Text).Any())
+            if (users.Where(a => a.UName == UNameEnterbox.Text).Any())
             {
                 switch (users.Where(a => a.UName == UNameEnterbox.Text).Count())
                 {
@@ -107,64 +111,120 @@ namespace Blackjack_CSC470
         }
         private void NewUserButton_Click(object sender, EventArgs e)
         {
-            //create new user button
-            /*relative text box names
-             * Username text box: Createusernamebox
-             * Password text box: Createpasswordbox
-             * First name text box: Firstnamebox
-             * Last name text box: Lastnamebox
-             * Address name text box: Addressbox
-             * Phone number text box: Phonenumberbox
-             * Credit Card text box: Creditcardbox
-             * Security question text box: Questionbox
-             * Security question answer text box: Questionanswerbox
-             */
-            UserLoginErrorProv.Clear();
-            string NewUsrName = CreateUserNameBox.Text;
-            string NewFName = Firstnamebox.Text;
-            string NewLName = Lastnamebox.Text;
-            string NewAddr0 = Address1box.Text;
-            string NewAddr1 = Address2box.Text;
-            string NewCity = Citybox.Text;
-            string NewState = StateBox.SelectedItem.ToString();
-            int NewZip = int.Parse(Zipbox.Text);
-            long NewPhone = long.Parse(Phonenumberbox.Text);
-            byte[] NewPass = sHA.ComputeHash(ue.GetBytes(CreatePasswordBox.Text));
-            byte[] NewCCd = sHA.ComputeHash(ue.GetBytes(Creditcardbox.Text));
-            byte[] NewCCV = sHA.ComputeHash(ue.GetBytes(CCVbox.Text));
-            byte[] NewExpr = sHA.ComputeHash(ue.GetBytes(Expdatebox.Text));
-            string NewQuest = Questionbox.Text;
-            byte[] NewAnswr = sHA.ComputeHash(ue.GetBytes(Questionanswerbox.Text));
-            int NewFour = int.Parse(Creditcardbox.Text.Substring(Creditcardbox.Text.Length - 4));
-            User User1 = new User(NewUsrName, NewFName, NewLName, NewAddr0,
-                                  NewAddr1, NewCity, NewState, NewZip,
-                                  NewPhone, NewPass, NewCCd, NewCCV, NewExpr,
-                                  NewQuest, NewAnswr, NewFour);
-            if (!users.Where(a => a.UName == User1.UName).Any())
+            if (NewUserButton.Text == CreateUser)
             {
-                users.Add(User1);
-                MessageBox.Show(string.Format("User {0} has been created!", User1.UName), "User created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //create new user button
+                /*relative text box names
+                 * Username text box: Createusernamebox
+                 * Password text box: Createpasswordbox
+                 * First name text box: Firstnamebox
+                 * Last name text box: Lastnamebox
+                 * Address name text box: Addressbox
+                 * Phone number text box: Phonenumberbox
+                 * Credit Card text box: Creditcardbox
+                 * Security question text box: Questionbox
+                 * Security question answer text box: Questionanswerbox
+                 */
+                UserLoginErrorProv.Clear();
+                string NewUsrName = CreateUserNameBox.Text;
+                string NewFName = Firstnamebox.Text;
+                string NewLName = Lastnamebox.Text;
+                string NewAddr0 = Address1box.Text;
+                string NewAddr1 = Address2box.Text;
+                string NewCity = Citybox.Text;
+                string NewState = StateBox.SelectedItem.ToString();
+                int NewZip = int.Parse(Zipbox.Text);
+                long NewPhone = long.Parse(Phonenumberbox.Text);
+                byte[] NewPass = sHA.ComputeHash(ue.GetBytes(CreatePasswordBox.Text));
+                byte[] NewCCd = sHA.ComputeHash(ue.GetBytes(Creditcardbox.Text));
+                byte[] NewCCV = sHA.ComputeHash(ue.GetBytes(CCVbox.Text));
+                byte[] NewExpr = sHA.ComputeHash(ue.GetBytes(Expdatebox.Text));
+                string NewQuest = Questionbox.Text;
+                byte[] NewAnswr = sHA.ComputeHash(ue.GetBytes(Questionanswerbox.Text));
+                int NewFour;
+                if (!int.TryParse(Creditcardbox.Text.Substring(Creditcardbox.Text.Length - 4), out NewFour))
+                { NewFour = int.Parse(Creditcardbox.Text); }
+                User User1 = new User(NewUsrName, NewFName, NewLName, NewAddr0,
+                                      NewAddr1, NewCity, NewState, NewZip,
+                                      NewPhone, NewPass, NewCCd, NewCCV, NewExpr,
+                                      NewQuest, NewAnswr, NewFour);
+                if (!users.Where(a => a.UName == User1.UName).Any())
+                {
+                    users.Add(User1);
+                    MessageBox.Show(string.Format("User {0} has been created!", User1.UName), "User created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    UNameEnterbox.Text = CreateUserNameBox.Text;
+                    CreateUserNameBox.Text = string.Empty;
+                    Firstnamebox.Text = string.Empty;
+                    Lastnamebox.Text = string.Empty;
+                    Address1box.Text = string.Empty;
+                    Address2box.Text = string.Empty;
+                    Citybox.Text = string.Empty;
+                    StateBox.Text = string.Empty;
+                    Zipbox.Text = string.Empty;
+                    CreatePasswordBox.Text = string.Empty;
+                    Creditcardbox.Text = string.Empty;
+                    CCImage.Visible = false;
+                    CCImage.Image = null;
+                    CCVbox.Text = string.Empty;
+                    Expdatebox.Text = string.Empty;
+                    Questionbox.Text = string.Empty;
+                    Questionanswerbox.Text = string.Empty;
+                    _ = UNameEnterbox.Focus();
+                }
+                else
+                    UserMaintErrorProv.SetError(CreateUserNameBox, UsrExists);
+            }
+            else if (NewUserButton.Text == SaveUser)
+            {
+                LoggedInUser.UName = CreateUserNameBox.Text;
+                CreatePasswordBox.Enabled = true;
+                LoggedInUser.FName = Firstnamebox.Text;
+                LoggedInUser.LName = Lastnamebox.Text;
+                LoggedInUser.AddrZero = Address1box.Text;
+                LoggedInUser.AddrOne = Address2box.Text;
+                LoggedInUser.City = Citybox.Text;
+                LoggedInUser.State = StateBox.Text;
+                LoggedInUser.ZipCode = Zipbox.Text;
+                LoggedInUser.PhoneNo = long.Parse(Phonenumberbox.Text);
+                if (long.TryParse(Creditcardbox.Text, out _))
+                {
+                    LoggedInUser.NewCC(
+                        sHA.ComputeHash(ue.GetBytes(Creditcardbox.Text)),
+                        int.Parse(Creditcardbox.Text.Length > 3 ?
+                        Creditcardbox.Text.Substring(Creditcardbox.Text.Length - 4) :
+                        Creditcardbox.Text),
+                        sHA.ComputeHash(ue.GetBytes(CCVbox.Text)),
+                        sHA.ComputeHash(ue.GetBytes(Expdatebox.Text)));
+                }
+                if ((Questionbox.Text != LoggedInUser.SecretQ) && !string.IsNullOrEmpty(Questionanswerbox.Text))
+                {
+                    LoggedInUser.NewSecQ(
+                        Questionbox.Text,
+                        sHA.ComputeHash(ue.GetBytes(Questionanswerbox.Text)));
+                }
+                NewUserButton.Text = CreateUser;
+                EditUserDataButton.Text = EditUser;
+                if (!users.Remove(users.Where(a => a.guid == LoggedInUser.guid).Single()))
+                    throw new Exception("Unable to remove the logged in user for updating.");
+                users.Add(LoggedInUser);
+                MessageBox.Show("This user's information has been updated!", "User updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 UNameEnterbox.Text = CreateUserNameBox.Text;
                 CreateUserNameBox.Text = string.Empty;
+                CreatePasswordBox.Text = string.Empty;
                 Firstnamebox.Text = string.Empty;
                 Lastnamebox.Text = string.Empty;
                 Address1box.Text = string.Empty;
                 Address2box.Text = string.Empty;
                 Citybox.Text = string.Empty;
-                StateBox.Text = string.Empty;
+                StateBox.SelectedIndex = 0;
                 Zipbox.Text = string.Empty;
-                CreatePasswordBox.Text = string.Empty;
+                Phonenumberbox.Text = string.Empty;
                 Creditcardbox.Text = string.Empty;
-                CCImage.Visible = false;
-                CCImage.Image = null;
                 CCVbox.Text = string.Empty;
                 Expdatebox.Text = string.Empty;
                 Questionbox.Text = string.Empty;
                 Questionanswerbox.Text = string.Empty;
-                _ = UNameEnterbox.Focus();
             }
-            else
-                UserMaintErrorProv.SetError(CreateUserNameBox, UsrExists);
         }
         private void ChangePassWdButton_Click(object sender, EventArgs e)
         {
@@ -327,7 +387,20 @@ namespace Blackjack_CSC470
                 {
                     UserMaintErrorProv.SetError(UNameEnterbox, InvalPass);
                 }
-                else if (string.IsNullOrEmpty(CreateUserNameBox.Text) && string.IsNullOrEmpty(Firstnamebox.Text) && string.IsNullOrEmpty(Lastnamebox.Text) && string.IsNullOrEmpty(Address1box.Text) && string.IsNullOrEmpty(Address2box.Text) && string.IsNullOrEmpty(Citybox.Text) && string.IsNullOrEmpty(StateBox.Text) && string.IsNullOrEmpty(Zipbox.Text) && string.IsNullOrEmpty(Phonenumberbox.Text) && string.IsNullOrEmpty(Creditcardbox.Text) && string.IsNullOrEmpty(CCVbox.Text) && string.IsNullOrEmpty(Expdatebox.Text) && string.IsNullOrEmpty(Questionbox.Text) && string.IsNullOrEmpty(Questionanswerbox.Text))
+                else if (string.IsNullOrEmpty(CreateUserNameBox.Text)
+                         && string.IsNullOrEmpty(Firstnamebox.Text)
+                         && string.IsNullOrEmpty(Lastnamebox.Text)
+                         && string.IsNullOrEmpty(Address1box.Text)
+                         && string.IsNullOrEmpty(Address2box.Text)
+                         && string.IsNullOrEmpty(Citybox.Text)
+                         && string.IsNullOrEmpty(StateBox.Text)
+                         && string.IsNullOrEmpty(Zipbox.Text)
+                         && string.IsNullOrEmpty(Phonenumberbox.Text)
+                         && string.IsNullOrEmpty(Creditcardbox.Text)
+                         && string.IsNullOrEmpty(CCVbox.Text)
+                         && string.IsNullOrEmpty(Expdatebox.Text)
+                         && string.IsNullOrEmpty(Questionbox.Text)
+                         && string.IsNullOrEmpty(Questionanswerbox.Text))
                 {
                     CreateUserNameBox.Text = LoggedInUser.UName;
                     CreatePasswordBox.Enabled = false;
@@ -339,7 +412,7 @@ namespace Blackjack_CSC470
                     StateBox.Text = LoggedInUser.State;
                     Zipbox.Text = LoggedInUser.ZipCode;
                     Phonenumberbox.Text = LoggedInUser.PhoneNo.ToString();
-                    Creditcardbox.Text = string.Concat(FourStars, LoggedInUser.LastFour);
+                    Creditcardbox.Text = string.Concat(FourStars, LoggedInUser.LastFour.ToString("0000"));
                     CCVbox.Text = FourStars;
                     Expdatebox.Text = "0000";
                     Questionbox.Text = LoggedInUser.SecretQ;
@@ -348,26 +421,26 @@ namespace Blackjack_CSC470
                     EditUserDataButton.Text = Cancel;
                 }
             }
-            else if (NewUserButton.Text == SaveUser)
+            else if (EditUserDataButton.Text == Cancel)
             {
-                CreateUserNameBox.Text = LoggedInUser.UName;
-                CreatePasswordBox.Enabled = false;
-                Firstnamebox.Text = LoggedInUser.FName;
-                Lastnamebox.Text = LoggedInUser.LName;
-                Address1box.Text = LoggedInUser.AddrZero;
-                Address2box.Text = LoggedInUser.AddrOne;
-                Citybox.Text = LoggedInUser.City;
-                StateBox.Text = LoggedInUser.State;
-                Zipbox.Text = LoggedInUser.ZipCode;
-                Phonenumberbox.Text = LoggedInUser.PhoneNo.ToString();
-                Creditcardbox.Text = string.Concat(FourStars, LoggedInUser.LastFour);
-                CCVbox.Text = FourStars;
-                Expdatebox.Text = "0000";
-                Questionbox.Text = LoggedInUser.SecretQ;
-                Questionanswerbox.Text = FourStars;
-                NewUserButton.Text = SaveUser;
-                EditUserDataButton.Text = Cancel;
-
+                UNameEnterbox.Text = CreateUserNameBox.Text;
+                CreateUserNameBox.Text = string.Empty;
+                CreatePasswordBox.Text = string.Empty;
+                Firstnamebox.Text = string.Empty;
+                Lastnamebox.Text = string.Empty;
+                Address1box.Text = string.Empty;
+                Address2box.Text = string.Empty;
+                Citybox.Text = string.Empty;
+                StateBox.SelectedIndex = 0;
+                Zipbox.Text = string.Empty;
+                Phonenumberbox.Text = string.Empty;
+                Creditcardbox.Text = string.Empty;
+                CCVbox.Text = string.Empty;
+                Expdatebox.Text = string.Empty;
+                Questionbox.Text = string.Empty;
+                Questionanswerbox.Text = string.Empty;
+                NewUserButton.Text = CreateUser;
+                EditUserDataButton.Text = EditUser;
             }
         }
     }
