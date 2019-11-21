@@ -218,6 +218,9 @@ namespace Blackjack_CSC470
                 else
                 { isgameover = true; }
             }
+            if (thePlayer.SoftHandValue > thePlayer.HardHandValue && thePlayer.SoftHandValue <= 21)
+                thePlayer.HardHandValue = thePlayer.SoftHandValue;
+
             //compare player and dealer hands
             if (theDealer.handvalue > 21)
             {
@@ -259,7 +262,6 @@ namespace Blackjack_CSC470
         private void Newgame_Click(object sender, EventArgs e)
         {
             theDeck.shuffledeck();
-            NewGameMethod();
             hashit = false;
             HitButton.Enabled = true;
             StandButton.Enabled = true;
@@ -271,6 +273,7 @@ namespace Blackjack_CSC470
             theDealer.resetdealer();
             thePlayer.resetplayer();
             HitButton.Enabled = true;
+            NewGameMethod();
         }
 
         private void Form1_Closing(object sender, EventArgs e)
