@@ -254,6 +254,7 @@ namespace Blackjack_CSC470
             StandButton.Enabled = false;
             Newgame.Enabled = true;
             _ = Newgame.Focus();
+            isgameover = false;
         }
         private void Newgame_Click(object sender, EventArgs e)
         {
@@ -355,7 +356,7 @@ namespace Blackjack_CSC470
                 Playercards[counter].Image = thePlayer.playerhit().CardFront();
             }
             Dealercards[0].Image = theDealer.getonedealercard().CardFront();
-            _ = theDealer.getonedealercard();
+            //_ = theDealer.getonedealercard();
             Dealercard2.Image = Card.GetBackImage();
             Dealercardvisible = 1;
             Playercardvisible = 2;
