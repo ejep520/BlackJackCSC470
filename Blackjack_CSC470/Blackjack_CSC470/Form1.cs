@@ -185,7 +185,7 @@ namespace Blackjack_CSC470
                     MessageBox.Show("You are unable to make the minimum bet and must make room for another player.\nGoodbye.");
                 }
             }
-            else if (thePlayer.HardHandValue == 21)
+            else if (thePlayer.HardHandValue == 21 || thePlayer.SoftHandValue == 21)
             {
                 MessageBox.Show("Blackjack!");
                 PlayerBalance += (int)(playerbet * 2.5);
