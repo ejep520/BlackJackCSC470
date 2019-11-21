@@ -27,7 +27,7 @@ namespace Blackjack_CSC470
         private const string UsrExists = "That user already exists!";
         private string EditUser;
         private const string SaveUser = "Save User";
-        private const string CreateUser = "Create User";
+        private string CreateUser;
         private const string Cancel = "Cancel";
         private const string UsrEmpty = "Please enter a user name!";
         private const string FourStars = "****";
@@ -42,6 +42,7 @@ namespace Blackjack_CSC470
             UserLoginErrorProv.Clear();
             UserMaintErrorProv.Clear();
             EditUser = EditUserDataButton.Text;
+            CreateUser = NewUserButton.Text;
             if (currentUser == Guid.Empty)
             { }
             else
@@ -142,8 +143,10 @@ namespace Blackjack_CSC470
                 string NewQuest = Questionbox.Text;
                 byte[] NewAnswr = sHA.ComputeHash(ue.GetBytes(Questionanswerbox.Text));
                 int NewFour;
-                if (!int.TryParse(Creditcardbox.Text.Substring(Creditcardbox.Text.Length - 4), out NewFour))
+                if (Creditcardbox.Text.Length < 4)
                 { NewFour = int.Parse(Creditcardbox.Text); }
+                else
+                { NewFour = int.Parse(Creditcardbox.Text.Substring(Creditcardbox.Text.Length - 4)); }
                 User User1 = new User(NewUsrName, NewFName, NewLName, NewAddr0,
                                       NewAddr1, NewCity, NewState, NewZip,
                                       NewPhone, NewPass, NewCCd, NewCCV, NewExpr,
@@ -441,6 +444,20 @@ namespace Blackjack_CSC470
                 Questionanswerbox.Text = string.Empty;
                 NewUserButton.Text = CreateUser;
                 EditUserDataButton.Text = EditUser;
+            }
+        }
+
+        private void Zipbox_Validated(object sender, EventArgs e)
+        {
+            if (int.TryParse(Zipbox.Text, out _))
+            {
+                UserMaintErrorProv.Clear();
+                NewUserButton.Enabled = true;
+            }
+            else
+            {
+                UserMaintErrorProv.SetError(Zipbox, "The zip is not valid.");
+                NewUserButton.Enabled = false;
             }
         }
     }
