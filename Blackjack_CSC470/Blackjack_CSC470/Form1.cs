@@ -187,7 +187,7 @@ namespace Blackjack_CSC470
             }
             else if (thePlayer.HardHandValue == 21 || thePlayer.SoftHandValue == 21)
             {
-                MessageBox.Show("Blackjack!");
+                MessageBox.Show("You have 21!");
                 PlayerBalance += (int)(playerbet * 2.5);
                 bets.SelectedIndex = 0;
                 HitButton.Enabled = false;
@@ -218,6 +218,7 @@ namespace Blackjack_CSC470
                 else
                 { isgameover = true; }
             }
+            //Use soft hand value if hand has ace and is better than hardhand value
             if (thePlayer.SoftHandValue > thePlayer.HardHandValue && thePlayer.SoftHandValue <= 21)
                 thePlayer.HardHandValue = thePlayer.SoftHandValue;
 
@@ -364,6 +365,15 @@ namespace Blackjack_CSC470
             Dealercardvisible = 1;
             Playercardvisible = 2;
             Newgame.Enabled = false;
+            if (thePlayer.HardHandValue == 21 || thePlayer.SoftHandValue == 21)
+            {
+                MessageBox.Show("You have Blackjack!");
+                PlayerBalance += (int)(playerbet * 2.5);
+                bets.SelectedIndex = 0;
+                HitButton.Enabled = false;
+                StandButton.Enabled = false;
+                _ = Newgame.Focus();
+            }
         }
         private void GetLoggedinUser()
         {
