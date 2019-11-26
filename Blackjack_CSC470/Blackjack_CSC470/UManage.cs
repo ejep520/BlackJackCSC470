@@ -25,9 +25,9 @@ namespace Blackjack_CSC470
         private const string InvalPass = "Invalid password!";
         private const string NoSuchUsr = "There is no such user!";
         private const string UsrExists = "That user already exists!";
-        private string EditUser;
+        private const string EditUser = "&Edit User Data";
         private const string SaveUser = "Save User";
-        private string CreateUser;
+        private const string CreateUser = "&Create New User";
         private const string Cancel = "Cancel";
         private const string UsrEmpty = "Please enter a user name!";
         private const string FourStars = "****";
@@ -41,11 +41,7 @@ namespace Blackjack_CSC470
             CCErrorProvider.Clear();
             UserLoginErrorProv.Clear();
             UserMaintErrorProv.Clear();
-            EditUser = EditUserDataButton.Text;
-            CreateUser = NewUserButton.Text;
-            if (currentUser == Guid.Empty)
-            { }
-            else
+            if (currentUser != Guid.Empty)
             {
                 UserIndexNo = users.FindIndex(a => a.guid == currentUser);
                 LoggedInUser = users[UserIndexNo];
@@ -79,8 +75,6 @@ namespace Blackjack_CSC470
             * Password text box: Passwordbox
             * Start amount text box: StartAmountBox
             */
-            //get username
-            string loginname = UNameEnterbox.Text;
             //get starting amount
             if (users.Where(a => a.UName == UNameEnterbox.Text).Any())
             {
@@ -100,9 +94,7 @@ namespace Blackjack_CSC470
                                 Close();
                             }
                             else
-                            {
                                 UserMaintErrorProv.SetError(Passwordbox, InvalPass);
-                            }
                             break;
                         }
                     default:
@@ -142,11 +134,7 @@ namespace Blackjack_CSC470
                 byte[] NewExpr = sHA.ComputeHash(ue.GetBytes(Expdatebox.Text));
                 string NewQuest = Questionbox.Text;
                 byte[] NewAnswr = sHA.ComputeHash(ue.GetBytes(Questionanswerbox.Text));
-                int NewFour;
-                if (Creditcardbox.Text.Length < 4)
-                { NewFour = int.Parse(Creditcardbox.Text); }
-                else
-                { NewFour = int.Parse(Creditcardbox.Text.Substring(Creditcardbox.Text.Length - 4)); }
+                int NewFour = Creditcardbox.Text.Length < 4 ? int.Parse(Creditcardbox.Text) : int.Parse(Creditcardbox.Text.Substring(Creditcardbox.Text.Length - 4)); 
                 User User1 = new User(NewUsrName, NewFName, NewLName, NewAddr0,
                                       NewAddr1, NewCity, NewState, NewZip,
                                       NewPhone, NewPass, NewCCd, NewCCV, NewExpr,
@@ -199,7 +187,7 @@ namespace Blackjack_CSC470
                         sHA.ComputeHash(ue.GetBytes(CCVbox.Text)),
                         sHA.ComputeHash(ue.GetBytes(Expdatebox.Text)));
                 }
-                if ((Questionbox.Text != LoggedInUser.SecretQ) && !string.IsNullOrEmpty(Questionanswerbox.Text))
+                if ((Questionbox.Text != LoggedInUser.SecretQ) && (Questionanswerbox.Text != FourStars))
                 {
                     LoggedInUser.NewSecQ(
                         Questionbox.Text,
@@ -254,41 +242,53 @@ namespace Blackjack_CSC470
             //forgot password button
             string username;
             if (string.IsNullOrEmpty(UNameEnterbox.Text))
-                UserMaintErrorProv.SetError(UNameEnterbox, "You must enter your username.");
-            else
-                username = UNameEnterbox.Text;
-            //Get user's security question and put it in the security question box
-            if (users.Where(a => a.UName == UNameEnterbox.Text).Any())
             {
-                User MaybeUser = users.Where(a => a.UName == UNameEnterbox.Text).Single();
-                Questionbox.Text = MaybeUser.SecretQ;
+                UserMaintErrorProv.SetError(UNameEnterbox, "You must enter your username.");
+                return;
             }
-            else
+            username = UNameEnterbox.Text;
+            //Get user's security question and put it in the security question box
+            if (!users.Where(a => a.UName == UNameEnterbox.Text).Any())
+            {
                 UserMaintErrorProv.SetError(UNameEnterbox, "You must enter a valid username.");
+                return;
+            }
+            User MaybeUser = users.Where(a => a.UName == UNameEnterbox.Text).Single();
+            Questionbox.Text = MaybeUser.SecretQ;
             //require input into question answer box
             string answer;
             if (string.IsNullOrEmpty(Questionanswerbox.Text))
+            {
                 UserMaintErrorProv.SetError(Questionanswerbox, "You must enter an answer.");
-            else
-                answer = Questionanswerbox.Text;
+                return;
+            }
+            answer = Questionanswerbox.Text;
+            if (!LoggedInUser.SecretAnsMatch(sHA.ComputeHash(ue.GetBytes(answer))))
+            {
+                UserMaintErrorProv.SetError(Questionanswerbox, "Incorrect answer.");
+                return;
+            }
             //check answer against stored data
             //take in password from data edit field
             string newpasswd;
             if (string.IsNullOrEmpty(CreatePasswordBox.Text))
+            {
                 UserMaintErrorProv.SetError(CreatePasswordBox, "You must enter a new password.");
-            else
-                newpasswd = CreatePasswordBox.Text;
+                return;
+            }
+            newpasswd = CreatePasswordBox.Text;
             //set new password
-
+            LoggedInUser.ChangePass(sHA.ComputeHash(ue.GetBytes(answer)), sHA.ComputeHash(ue.GetBytes(newpasswd)));
+            users.RemoveAt(UserIndexNo);
+            users.Add(LoggedInUser);
+            UserIndexNo = users.FindIndex(a => a.guid == LoggedInUser.guid);
         }
-
         private void CCVbox_Enter(object sender, EventArgs e)
         {
             CCVImage.Visible = true;
             PrevCCImageState = CCImage.Visible;
             CCImage.Visible = false;
         }
-
         private void CCVbox_Leave(object sender, EventArgs e)
         {
             CCVImage.Visible = false;
@@ -367,29 +367,21 @@ namespace Blackjack_CSC470
                 CCImage.Visible = false;
             }
         }
-
         private void UManage_FormClosing(object sender, FormClosingEventArgs e)
         {
             sHA.Dispose();
             Dispose();
         }
-
         private void Edituserdata_Click(object sender, EventArgs e)
         {
             if (EditUserDataButton.Text == EditUser)
             {
                 if (string.IsNullOrEmpty(UNameEnterbox.Text))
-                {
                     UserMaintErrorProv.SetError(UNameEnterbox, UsrEmpty);
-                }
                 else if (LoggedInUser.UName != UNameEnterbox.Text)
-                {
                     UserMaintErrorProv.SetError(UNameEnterbox, NoSuchUsr);
-                }
                 else if (!LoggedInUser.PassWdMatch(sHA.ComputeHash(ue.GetBytes(Passwordbox.Text))))
-                {
                     UserMaintErrorProv.SetError(UNameEnterbox, InvalPass);
-                }
                 else if (string.IsNullOrEmpty(CreateUserNameBox.Text)
                          && string.IsNullOrEmpty(Firstnamebox.Text)
                          && string.IsNullOrEmpty(Lastnamebox.Text)
@@ -446,19 +438,16 @@ namespace Blackjack_CSC470
                 EditUserDataButton.Text = EditUser;
             }
         }
-
         private void Zipbox_Validated(object sender, EventArgs e)
         {
-            if (int.TryParse(Zipbox.Text, out _))
-            {
-                UserMaintErrorProv.Clear();
-                NewUserButton.Enabled = true;
-            }
-            else
+            int MaybeZip;
+            if (!int.TryParse(Zipbox.Text, out MaybeZip) || (MaybeZip < 10000) || (MaybeZip > 999999999))
             {
                 UserMaintErrorProv.SetError(Zipbox, "The zip is not valid.");
                 NewUserButton.Enabled = false;
+                return;
             }
+            UserMaintErrorProv.Clear();
         }
     }
 }

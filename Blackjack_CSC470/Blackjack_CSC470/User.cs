@@ -43,7 +43,7 @@ namespace Blackjack_CSC470
         }
         public void ChangePass(byte[] OldPass, byte[] NewPass)
         {
-            if (PassWdMatch(OldPass))
+            if (PassWdMatch(OldPass) || SecretAnsMatch(OldPass))
                 _passHash = NewPass;
             else
                 throw new AccessViolationException("Password change attempt with invalid password!", (Exception)null);
