@@ -20,7 +20,12 @@ namespace Blackjack_CSC470Tests
             { Assert.Fail(); } // Assert: That is a fail!
             return; // Assert: We didn't hit a fail condition, so we passed.
         }
-        // [TestMethod]
-        // public void 
+        [TestMethod]
+        public void TestDealerDrawOneCard()
+        {
+            Deck TheDeck = new Deck();
+            Dealer TheDealer = new Dealer(TheDeck);
+
+        }
     }
 }

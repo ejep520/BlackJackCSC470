@@ -240,45 +240,42 @@ namespace Blackjack_CSC470
         private void ForgotPassWdButton_Click(object sender, EventArgs e)
         {
             //forgot password button
-            string username;
             if (string.IsNullOrEmpty(UNameEnterbox.Text))
             {
                 UserMaintErrorProv.SetError(UNameEnterbox, "You must enter your username.");
                 return;
             }
-            username = UNameEnterbox.Text;
+            string Username = UNameEnterbox.Text;
             //Get user's security question and put it in the security question box
-            if (!users.Where(a => a.UName == UNameEnterbox.Text).Any())
+            if (!users.Where(a => a.UName == Username).Any())
             {
                 UserMaintErrorProv.SetError(UNameEnterbox, "You must enter a valid username.");
                 return;
             }
-            User MaybeUser = users.Where(a => a.UName == UNameEnterbox.Text).Single();
+            User MaybeUser = users.Where(a => a.UName == Username).Single();
             Questionbox.Text = MaybeUser.SecretQ;
             //require input into question answer box
-            string answer;
             if (string.IsNullOrEmpty(Questionanswerbox.Text))
             {
                 UserMaintErrorProv.SetError(Questionanswerbox, "You must enter an answer.");
                 return;
             }
-            answer = Questionanswerbox.Text;
-            if (!LoggedInUser.SecretAnsMatch(sHA.ComputeHash(ue.GetBytes(answer))))
+            string Answer = Questionanswerbox.Text;
+            if (!LoggedInUser.SecretAnsMatch(sHA.ComputeHash(ue.GetBytes(Answer))))
             {
                 UserMaintErrorProv.SetError(Questionanswerbox, "Incorrect answer.");
                 return;
             }
             //check answer against stored data
             //take in password from data edit field
-            string newpasswd;
             if (string.IsNullOrEmpty(CreatePasswordBox.Text))
             {
                 UserMaintErrorProv.SetError(CreatePasswordBox, "You must enter a new password.");
                 return;
             }
-            newpasswd = CreatePasswordBox.Text;
+            string NewPasswd = CreatePasswordBox.Text;
             //set new password
-            LoggedInUser.ChangePass(sHA.ComputeHash(ue.GetBytes(answer)), sHA.ComputeHash(ue.GetBytes(newpasswd)));
+            LoggedInUser.ChangePass(sHA.ComputeHash(ue.GetBytes(Answer)), sHA.ComputeHash(ue.GetBytes(NewPasswd)));
             users.RemoveAt(UserIndexNo);
             users.Add(LoggedInUser);
             UserIndexNo = users.FindIndex(a => a.guid == LoggedInUser.guid);

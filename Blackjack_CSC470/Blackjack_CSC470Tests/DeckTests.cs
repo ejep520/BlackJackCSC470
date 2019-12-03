@@ -12,7 +12,7 @@ namespace Blackjack_CSC470.Tests
     [TestClass]
     public class DeckTests
     {
-        [TestMethod()]
+        [TestMethod]
         public void FiftyTwoCount() // Make sure a new deck has 52 cards.
         {
             Deck deck = new Deck(); // Arrange: Make a new deck.
