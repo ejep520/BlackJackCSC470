@@ -32,6 +32,9 @@ namespace Blackjack_CSC470
         public Guid LoggedInPlayer;
         private SaveData saveData = null;
         bool lockedbet = false;
+        bool insurance = false;
+        bool insuranceclicked = true;
+        int extra=0;
         public BlackJack()
         {
             InitializeComponent();
@@ -141,7 +144,7 @@ namespace Blackjack_CSC470
                 }
                 else
                 {
-                        for (int counter = 0; counter < 3; counter++)
+                        for (int counter = 0; counter < 2; counter++)
                         {
                             Playercards[counter].Visible = true;
                             Playercards[counter].Image = Card.GetBackImage();
@@ -152,13 +155,20 @@ namespace Blackjack_CSC470
             }
             else
             { 
-                    for (int counter = 0; counter < 3; counter++)
+                    for (int counter = 0; counter < 2; counter++)
                     {
                         Playercards[counter].Visible = true;
                         Playercards[counter].Image = Card.GetBackImage();
                         Dealercards[counter].Visible = true;
                         Dealercards[counter].Image = Card.GetBackImage();
                     }
+            }
+            for (int counter = 2; counter < 7; counter++)
+            {
+                Playercards[counter].Visible = false;
+                Playercards[counter].Image = Card.GetBackImage();
+                Dealercards[counter].Visible = false;
+                Dealercards[counter].Image = Card.GetBackImage();
             }
             UManage UserManagement = new UManage(LoggedInPlayer, users);
             UserManagement.ShowDialog(this);
@@ -180,12 +190,6 @@ namespace Blackjack_CSC470
             {
                 MessageBox.Show("You have not placed your bet. Bet and then try again.");
                 return;
-            }
-            if (!hashit)
-            {
-                PlayerBalance -= int.Parse(bets.SelectedItem.ToString());
-                playerbet = int.Parse(bets.SelectedItem.ToString());
-                hashit = true;
             }
             PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
             if ((Playercardvisible < 7) && (thePlayer.HardHandValue < 21))
@@ -233,13 +237,9 @@ namespace Blackjack_CSC470
                 MessageBox.Show("You have not placed your bet. Bet and then try again.");
                 return;
             }
-            if (!hashit)
-            {
-                PlayerBalance -= int.Parse(bets.SelectedItem.ToString());
-                playerbet = int.Parse(bets.SelectedItem.ToString());
-                hashit = true;
-            }
             //player chooses to stand. Start dealer functions
+            if (insurance)
+                Dealercards[Dealercardvisible].Image = theDealer.getdealerslastcard().CardFront();
             while (!isgameover)
             {
                 theDealer.dealeraction(thePlayer.HardHandValue, playerbet);
@@ -311,7 +311,9 @@ namespace Blackjack_CSC470
             insuranceamountbox.Visible = false;
             Insurancebutton.Visible = false;
             Splithandbutton.Visible = false;
-            for (int counter = 0; counter < 3; counter++)
+            insurance = false;
+            insuranceclicked = true;
+            for (int counter = 0; counter < 2; counter++)
             {
                 Playercards[counter].Visible = true;
                 Playercards[counter].Image = Card.GetBackImage();
@@ -415,22 +417,16 @@ namespace Blackjack_CSC470
             Dealercardvisible = 1;
             Playercardvisible = 2;
             Newgame.Enabled = false;
-            if (thePlayer.HardHandValue == 21 || thePlayer.SoftHandValue == 21)
-            {
-                MessageBox.Show("You have Blackjack!");
-                PlayerBalance += (int)(playerbet * 2.5);
-                bets.SelectedIndex = 0;
-                HitButton.Enabled = false;
-                StandButton.Enabled = false;
-                _ = Newgame.Focus();
-            }
             //if statement for insurance
             if (theDealer.getdealerslastcard().Face == 1)
             {
                 //display insurance button
                 Insurancebutton.Visible = true;
-                //maybe display textbox or list
                 insuranceamountbox.Visible = true;
+                HitButton.Enabled = false;
+                StandButton.Enabled = false;
+                insuranceclicked = false;
+                insurance = true;
             }
         }
         private void GetLoggedinUser()
@@ -477,7 +473,19 @@ namespace Blackjack_CSC470
         {
             bets.Enabled = false;
             lockedbet = true;
+            playerbet = int.Parse(bets.SelectedItem.ToString());
+            PlayerBalance -= playerbet;
+            Newgame.Enabled = false;
             NewGameMethod();
+            if (thePlayer.HardHandValue == 21 || thePlayer.SoftHandValue == 21 && !insurance)
+            {
+                MessageBox.Show("You have Blackjack!");
+                PlayerBalance += (int)(playerbet * 2.5);
+                bets.SelectedIndex = 0;
+                HitButton.Enabled = false;
+                StandButton.Enabled = false;
+                _ = Newgame.Focus();
+            }
         }
 
         private void Splithandbutton_Click(object sender, EventArgs e)
@@ -487,7 +495,42 @@ namespace Blackjack_CSC470
 
         private void Insurancebutton_Click(object sender, EventArgs e)
         {
-
+            insuranceclicked = true;
+            int insurancebet = int.Parse(insuranceamountbox.Text);
+            if (insurancebet > (playerbet / 2))
+                insurancebet = playerbet / 2;
+            insuranceamountbox.Text = insurancebet.ToString();
+            PlayerBalance -= insurancebet;
+            PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
+            if (theDealer.getonedealercard().ValueOf == 10)
+            {
+                theDealer.getdealerslastcard().CardFront();
+                MessageBox.Show("The dealer has Blackjack. You get your insurance payout");
+                PlayerBalance += insurancebet * 2;
+                PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
+                Newgame.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("The dealer does not have Blackjack. You lose your insurance.");
+                StandButton.Enabled = true;
+                HitButton.Enabled = true;
+            }
+            if (thePlayer.SoftHandValue == 21 && insurance)
+            {
+                MessageBox.Show("Push. You get your main bet back");
+                PlayerBalance += playerbet;
+            }
+            if (thePlayer.HardHandValue == 21 || thePlayer.SoftHandValue == 21 && !insurance)
+            {
+                MessageBox.Show("You have Blackjack!");
+                PlayerBalance += (int)(playerbet * 2.5);
+                bets.SelectedIndex = 0;
+                HitButton.Enabled = false;
+                StandButton.Enabled = false;
+                Newgame.Enabled = true;
+                _ = Newgame.Focus();
+            }
         }
     }
 }
