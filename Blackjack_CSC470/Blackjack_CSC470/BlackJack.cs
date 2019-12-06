@@ -181,6 +181,11 @@ namespace Blackjack_CSC470
             UserManagement.Dispose();
             GetLoggedinUser();
             PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
+            if (PlayerBalance < 10)
+            {
+                MessageBox.Show("You must add more money before you can play");
+                Application.Exit();
+            }
         }
 
         private void hit_Click(object sender, EventArgs e)
@@ -295,6 +300,11 @@ namespace Blackjack_CSC470
         }
         private void Newgame_Click(object sender, EventArgs e)
         {
+            if (PlayerBalance < 10)
+            {
+                MessageBox.Show("You must add more money to play.");
+                return;
+            }
             theDeck.shuffledeck();
             hashit = false;
             HitButton.Enabled = true;
@@ -313,6 +323,7 @@ namespace Blackjack_CSC470
             Splithandbutton.Visible = false;
             insurance = false;
             insuranceclicked = true;
+            Lockbetbutton.Enabled = true;
             for (int counter = 0; counter < 2; counter++)
             {
                 Playercards[counter].Visible = true;
@@ -471,7 +482,13 @@ namespace Blackjack_CSC470
 
         private void Lockbetbutton_Click(object sender, EventArgs e)
         {
-            bets.Enabled = false;
+            if (bets.SelectedIndex != 0)
+                bets.Enabled = false;
+            if (int.Parse(bets.SelectedIndex.ToString()) > PlayerBalance)
+            {
+                MessageBox.Show("You can't bet more than you have");
+                return;
+            }
             lockedbet = true;
             playerbet = int.Parse(bets.SelectedItem.ToString());
             PlayerBalance -= playerbet;
@@ -484,8 +501,11 @@ namespace Blackjack_CSC470
                 bets.SelectedIndex = 0;
                 HitButton.Enabled = false;
                 StandButton.Enabled = false;
+                Newgame.Enabled = true;
                 _ = Newgame.Focus();
             }
+            else
+                Lockbetbutton.Enabled = false;
         }
 
         private void Splithandbutton_Click(object sender, EventArgs e)
@@ -502,9 +522,10 @@ namespace Blackjack_CSC470
             insuranceamountbox.Text = insurancebet.ToString();
             PlayerBalance -= insurancebet;
             PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
-            if (theDealer.getonedealercard().ValueOf == 10)
+            Card temp = theDealer.getonedealercard();
+            if (temp.Face == 10 || temp.ValueOf == 10)
             {
-                theDealer.getdealerslastcard().CardFront();
+                Dealercards[Dealercardvisible].Image = theDealer.getdealerslastcard().CardFront();
                 MessageBox.Show("The dealer has Blackjack. You get your insurance payout");
                 PlayerBalance += insurancebet * 2;
                 PlayerBalanceLabel.Text = string.Format("Your balance is {0}", PlayerBalance.ToString("C0"));
