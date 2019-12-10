@@ -331,7 +331,6 @@ namespace Blackjack_CSC470
             lockedbet = false;
             insuranceamountbox.Visible = false;
             Insurancebutton.Visible = false;
-            Splithandbutton.Visible = false;
             insurance = false;
             Lockbetbutton.Enabled = true;
             insurancebet = 0;
@@ -516,11 +515,6 @@ namespace Blackjack_CSC470
             }
             else
                 Lockbetbutton.Enabled = false;
-        }
-
-        private void Splithandbutton_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void Insurancebutton_Click(object sender, EventArgs e)

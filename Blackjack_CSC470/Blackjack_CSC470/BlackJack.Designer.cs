@@ -59,7 +59,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.LoggedInPlayerLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.Lockbetbutton = new System.Windows.Forms.Button();
-            this.Splithandbutton = new System.Windows.Forms.Button();
             this.Insurancebutton = new System.Windows.Forms.Button();
             this.insuranceamountbox = new System.Windows.Forms.MaskedTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.Playercard1)).BeginInit();
@@ -403,18 +402,6 @@
             this.Lockbetbutton.UseVisualStyleBackColor = false;
             this.Lockbetbutton.Click += new System.EventHandler(this.Lockbetbutton_Click);
             // 
-            // Splithandbutton
-            // 
-            this.Splithandbutton.BackColor = System.Drawing.Color.ForestGreen;
-            this.Splithandbutton.Location = new System.Drawing.Point(544, 426);
-            this.Splithandbutton.Name = "Splithandbutton";
-            this.Splithandbutton.Size = new System.Drawing.Size(109, 37);
-            this.Splithandbutton.TabIndex = 25;
-            this.Splithandbutton.Text = "Split hand";
-            this.Splithandbutton.UseVisualStyleBackColor = false;
-            this.Splithandbutton.Visible = false;
-            this.Splithandbutton.Click += new System.EventHandler(this.Splithandbutton_Click);
-            // 
             // Insurancebutton
             // 
             this.Insurancebutton.BackColor = System.Drawing.Color.ForestGreen;
@@ -444,7 +431,6 @@
             this.ClientSize = new System.Drawing.Size(823, 531);
             this.Controls.Add(this.insuranceamountbox);
             this.Controls.Add(this.Insurancebutton);
-            this.Controls.Add(this.Splithandbutton);
             this.Controls.Add(this.Lockbetbutton);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.PlayerBalanceLabel);
@@ -531,7 +517,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel LoggedInPlayerLabel;
         private System.Windows.Forms.Button Lockbetbutton;
-        private System.Windows.Forms.Button Splithandbutton;
         private System.Windows.Forms.Button Insurancebutton;
         private System.Windows.Forms.MaskedTextBox insuranceamountbox;
     }
