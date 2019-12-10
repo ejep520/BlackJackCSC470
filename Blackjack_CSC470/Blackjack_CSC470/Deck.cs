@@ -9,8 +9,6 @@ namespace Blackjack_CSC470
     [Serializable]
     public class Deck
     {
-        // int Num_Cards = 52;
-        // int oncard = 0;
         private const int decks = 1; // How many decks are getting shuffled together?
 
         private List<Card> deck = new List<Card>();

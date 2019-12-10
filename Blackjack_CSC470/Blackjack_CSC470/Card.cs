@@ -213,5 +213,32 @@ namespace Blackjack_CSC470
             }
             get => _face;
         }
+
+        public static bool operator ==(Card First, Card obj)
+        {
+            if ((First.Suit == obj.Suit) && (First.Face == obj.Face) && (First.DeckNo == obj.DeckNo))
+                return true;
+            return false;
+        }
+        public static bool operator !=(Card First, Card obj)
+        {
+            if ((First.Suit != obj.Suit) || (First.Face != obj.Face) || (First.DeckNo != obj.DeckNo))
+                return true;
+            return false;
+        }
+        public bool Equals(Card obj)
+        {
+            if ((Suit == obj.Suit) && (Face == obj.Face) && (DeckNo == obj.DeckNo))
+                return true;
+            return false;
+        }
+        public override bool Equals(object obj)
+        {
+            return false;
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

@@ -2,7 +2,7 @@
 using Blackjack_CSC470;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Blackjack_CSC470Tests
+namespace Blackjack_CSC470.Tests
 {
     [TestClass]
     public class DealerTests
@@ -23,9 +23,20 @@ namespace Blackjack_CSC470Tests
         [TestMethod]
         public void TestDealerDrawOneCard()
         {
-            Deck TheDeck = new Deck();
-            Dealer TheDealer = new Dealer(TheDeck);
-
+            Deck TheDeck = new Deck(); // Arrange: Create a new deck.
+            Dealer TheDealer = new Dealer(TheDeck); // Arrange: Create a dealer object.
+            Card newCard = TheDealer.getonedealercard(); // Act: Have the dealer draw a card.
+            Assert.IsTrue(TheDealer.handvalue == newCard.ValueOf); // Assert: Test that the value of the card drawn == the vaue of the dealer's hand.
+            return;
+        }
+        [TestMethod]
+        public void TestDealerLastCardDrawn()
+        {
+            Deck TheDeck = new Deck(); // Arrange: Create a new deck.
+            Dealer TheDealer = new Dealer(TheDeck); // Arrange: Create a dealer object.
+            Card newCard = TheDealer.getonedealercard(); // Act: Have the dealer draw a card.
+            Assert.IsTrue(TheDealer.getdealerslastcard() == newCard); // Assert: The lastcard function of the dealer returns a card == to the last card drawn.
+            return;
         }
     }
 }

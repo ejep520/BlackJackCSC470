@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Blackjack_CSC470.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class PlayerTests
     {
-        [TestMethod()]
+        [TestMethod]
         public void TestIsBusted()
         {
             Deck deck = new Deck();
@@ -20,18 +20,12 @@ namespace Blackjack_CSC470.Tests
             {
                 HardHandValue = 22
             };
-            if (!player.isplayerbusted())
-            {
-                Assert.Fail();
-            }
+            Assert.IsTrue(player.isplayerbusted());
             player.HardHandValue = 20;
-            if (player.isplayerbusted())
-            {
-                Assert.Fail();
-            }
+            Assert.IsFalse(player.isplayerbusted());
             return;
         }
-        [TestMethod()]
+        [TestMethod]
         public void DrawTest()
         {
             Deck deck = new Deck();
@@ -40,17 +34,11 @@ namespace Blackjack_CSC470.Tests
             List<Card> cardDump = new List<Card>();
             cardDump.Clear();
             for (int i = 0; i < 51; i++)
-            {
                 cardDump.Add(deck.drawcard());
-            }
             foreach (Card testCard in cardDump)
-            {
-                if ((testCard.Suit == hitcard.Suit) && (testCard.Face == hitcard.Face))
-                {
-                    Assert.Fail();
-                }
-            }
+                Assert.IsFalse(testCard == hitcard);
             return;
         }
+
     }
 }
