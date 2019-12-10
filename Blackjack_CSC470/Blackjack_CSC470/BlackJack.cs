@@ -527,6 +527,11 @@ namespace Blackjack_CSC470
         private void Insurancebutton_Click(object sender, EventArgs e)
         {
             insurancebet = int.Parse(insuranceamountbox.Text);
+            if (insurancebet == 0)
+            {
+                MessageBox.Show("You must place a minimum bet of $1");
+                return;
+            }
             if (insurancebet > (playerbet / 2))
                 insurancebet = playerbet / 2;
             insuranceamountbox.Text = insurancebet.ToString();

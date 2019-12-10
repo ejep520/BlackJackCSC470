@@ -49,10 +49,13 @@ namespace Blackjack_CSC470.Tests
             const int testCardFace = 1; //Ace
             const int testCardSuit = 0; //Hearts
             const int testCardDeck = 0; //Deck #
+            Card card = new Card(testCardFace, testCardSuit, testCardDeck); // Make an ace of hearts.
 
-            Card card = new Card(testCardFace, testCardSuit, testCardDeck); 
-            Image image = card.CardFront(); // Act: Call the function to get the front of the card's image. Throw any exceptions as failures.
-            return;// Assert: We got the image without exceptions? Awesome. Good night.
+            // Act: Call the function to get the front of the card's image. Throw any exceptions as failures.
+            Image image = card.CardFront();
+
+            // Assert: We got the image without exceptions? Awesome. Good night.
+            return;
         }
     }
 }
