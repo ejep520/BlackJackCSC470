@@ -39,7 +39,6 @@ namespace Blackjack_CSC470
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            bets.Items.Add(0);
             bets.Items.Add(10); //betsList.Items.Add("$10.00");
             bets.Items.Add(20); //betsList.Items.Add("$20.00");
             bets.Items.Add(30); //betsList.Items.Add("$30.00");
@@ -198,7 +197,7 @@ namespace Blackjack_CSC470
                 Insurancebutton.Enabled = false;
             }
             Newgame.Enabled = true;
-            if (bets.SelectedIndex == 0 || !lockedbet)
+            if (!lockedbet)
             {
                 MessageBox.Show("You have not placed your bet. Bet and then try again.");
                 return;
@@ -250,7 +249,7 @@ namespace Blackjack_CSC470
                 insuranceamountbox.Enabled = false;
                 Insurancebutton.Enabled = false;
             }
-            if (bets.SelectedIndex == 0 || !lockedbet)
+            if (!lockedbet)
             {
                 MessageBox.Show("You have not placed your bet. Bet and then try again.");
                 return;
@@ -493,9 +492,9 @@ namespace Blackjack_CSC470
 
         private void Lockbetbutton_Click(object sender, EventArgs e)
         {
-            if (bets.SelectedIndex != 0 && int.Parse(bets.SelectedIndex.ToString()) < PlayerBalance)
+            if (int.Parse(bets.SelectedIndex.ToString()) < PlayerBalance)
                 bets.Enabled = false;
-            if (int.Parse(bets.SelectedIndex.ToString()) > PlayerBalance)
+            else
             {
                 MessageBox.Show("You can't bet more than you have");
                 return;
