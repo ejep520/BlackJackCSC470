@@ -214,7 +214,7 @@ namespace Blackjack_CSC470
             get => _face;
         }
 
-        public static bool operator ==(Card First, Card obj)
+        /*public static bool operator ==(Card First, Card obj)
         {
             if ((First.Suit == obj.Suit) && (First.Face == obj.Face) && (First.DeckNo == obj.DeckNo))
                 return true;
@@ -239,6 +239,6 @@ namespace Blackjack_CSC470
         public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
+        }*/
     }
 }

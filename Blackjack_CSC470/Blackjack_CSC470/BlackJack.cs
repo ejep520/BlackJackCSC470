@@ -26,15 +26,13 @@ namespace Blackjack_CSC470
         PictureBox[] Playercards = new PictureBox[7];
         PictureBox[] Dealercards = new PictureBox[7];
         bool isgameover = false;
-        bool hashit;
         public List<User> users = new List<User>();
         private IFormatter formatter = new BinaryFormatter();
         public Guid LoggedInPlayer;
         private SaveData saveData = null;
         bool lockedbet = false;
         bool insurance = false;
-        bool insuranceclicked = true;
-        int extra=0;
+        int insurancebet = 0;
         public BlackJack()
         {
             InitializeComponent();
@@ -125,6 +123,9 @@ namespace Blackjack_CSC470
                     thePlayer = saveData.player;
                     theDealer = saveData.dealer;
                     bets.SelectedIndex = saveData.theBet;
+                    insurancebet = saveData.insuranceBet;
+                    lockedbet = saveData.lockedInBet;
+                    insurance = saveData.insurance;
                     Playercardvisible = saveData.Playercardvisible;
                     Dealercardvisible = saveData.Dealercardvisible;
                     for (int counter = 0; counter < 7; counter++)
@@ -190,6 +191,12 @@ namespace Blackjack_CSC470
 
         private void hit_Click(object sender, EventArgs e)
         {
+            if (Insurancebutton.Visible)
+            {
+                insuranceamountbox.Text = "0";
+                insuranceamountbox.Enabled = false;
+                Insurancebutton.Enabled = false;
+            }
             Newgame.Enabled = true;
             if (bets.SelectedIndex == 0 || !lockedbet)
             {
@@ -237,6 +244,12 @@ namespace Blackjack_CSC470
 
         private void stand_Click(object sender, EventArgs e)
         {
+            if (Insurancebutton.Visible)
+            {
+                insuranceamountbox.Text = "0";
+                insuranceamountbox.Enabled = false;
+                Insurancebutton.Enabled = false;
+            }
             if (bets.SelectedIndex == 0 || !lockedbet)
             {
                 MessageBox.Show("You have not placed your bet. Bet and then try again.");
@@ -306,7 +319,6 @@ namespace Blackjack_CSC470
                 return;
             }
             theDeck.shuffledeck();
-            hashit = false;
             HitButton.Enabled = true;
             StandButton.Enabled = true;
             Newgame.Enabled = false;
@@ -322,8 +334,8 @@ namespace Blackjack_CSC470
             Insurancebutton.Visible = false;
             Splithandbutton.Visible = false;
             insurance = false;
-            insuranceclicked = true;
             Lockbetbutton.Enabled = true;
+            insurancebet = 0;
             for (int counter = 0; counter < 2; counter++)
             {
                 Playercards[counter].Visible = true;
@@ -367,6 +379,8 @@ namespace Blackjack_CSC470
                     if (!Newgame.Enabled)
                     {
                         saveData.theBet = bets.SelectedIndex;
+                        saveData.insuranceBet = insurancebet;
+                        saveData.lockedInBet = lockedbet;
                         saveData.deck = theDeck;
                         saveData.dealer = theDealer;
                         saveData.player = thePlayer;
@@ -434,9 +448,6 @@ namespace Blackjack_CSC470
                 //display insurance button
                 Insurancebutton.Visible = true;
                 insuranceamountbox.Visible = true;
-                HitButton.Enabled = false;
-                StandButton.Enabled = false;
-                insuranceclicked = false;
                 insurance = true;
             }
         }
@@ -482,7 +493,7 @@ namespace Blackjack_CSC470
 
         private void Lockbetbutton_Click(object sender, EventArgs e)
         {
-            if (bets.SelectedIndex != 0)
+            if (bets.SelectedIndex != 0 && int.Parse(bets.SelectedIndex.ToString()) < PlayerBalance)
                 bets.Enabled = false;
             if (int.Parse(bets.SelectedIndex.ToString()) > PlayerBalance)
             {
@@ -515,8 +526,7 @@ namespace Blackjack_CSC470
 
         private void Insurancebutton_Click(object sender, EventArgs e)
         {
-            insuranceclicked = true;
-            int insurancebet = int.Parse(insuranceamountbox.Text);
+            insurancebet = int.Parse(insuranceamountbox.Text);
             if (insurancebet > (playerbet / 2))
                 insurancebet = playerbet / 2;
             insuranceamountbox.Text = insurancebet.ToString();
@@ -534,6 +544,7 @@ namespace Blackjack_CSC470
             else
             {
                 MessageBox.Show("The dealer does not have Blackjack. You lose your insurance.");
+                HitButton.Enabled = true;
                 StandButton.Enabled = true;
                 HitButton.Enabled = true;
             }

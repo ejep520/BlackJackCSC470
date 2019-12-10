@@ -15,10 +15,18 @@ namespace Blackjack_CSC470.Tests
         [TestMethod]
         public void CardCreationTest()
         {
-            // Arrange: Nothing to be arranged for this test.
+            // Arrange: Declare valid and invalid card parameters.
+            const int testCardFace = 1; //Ace
+            const int testCardSuit = 0; //Hearts
+            const int testCardDeck = 0; //Deck #
+
+            const int badCardFace = 14; //Invalid face
+            const int badCardSuit = 5; //Invalid suit
+            const int badCardDeck = 0; //Deck #
+
             try
             {
-                Card test = new Card(1, 0, 0); // Act: Can I create an ace of hearts?
+                Card test = new Card(testCardFace, testCardSuit, testCardDeck); // Act: Can I create an ace of hearts?
             }
             catch (Exception)
             {
@@ -27,7 +35,7 @@ namespace Blackjack_CSC470.Tests
             }
             try
             {
-                Card badCard = new Card(14, 5, 0); // Act: Make a ... Dictator-for-life of ... um... nukes! This should fail.
+                Card badCard = new Card(badCardFace, badCardSuit, badCardDeck); // Act: Make a ... Dictator-for-life of ... um... nukes! This should fail.
             }
             catch (ArgumentOutOfRangeException) // This should fail. If it does,
             { return; } // Awesome. Test passes.
@@ -37,8 +45,12 @@ namespace Blackjack_CSC470.Tests
         [TestMethod]
         public void CardFrontTest()
         {
-            // Arrange:
-            Card card = new Card(1, 0, 0); // Make an ace of hearts.
+            // Arrange: Declare parameters for ace of hearts test card
+            const int testCardFace = 1; //Ace
+            const int testCardSuit = 0; //Hearts
+            const int testCardDeck = 0; //Deck #
+
+            Card card = new Card(testCardFace, testCardSuit, testCardDeck); 
             Image image = card.CardFront(); // Act: Call the function to get the front of the card's image. Throw any exceptions as failures.
             return;// Assert: We got the image without exceptions? Awesome. Good night.
         }
